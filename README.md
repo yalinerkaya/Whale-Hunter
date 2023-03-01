@@ -3,6 +3,7 @@
 - 분산 서버 환경에서 일어날 수 있는 다양한 이슈를 해결하며 서버의 성능을 개선하고, 유지보수성 높은 프로그램을 작성하기 위해 고민하며 개발하였습니다
 
 # Architecture
+![image](https://user-images.githubusercontent.com/72185011/222195610-18231737-8503-4930-b1b7-c3ba0b04d40f.png)
 
 # ERD
 
