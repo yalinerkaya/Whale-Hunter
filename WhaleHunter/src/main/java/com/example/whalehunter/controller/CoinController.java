@@ -1,28 +1,32 @@
 package com.example.whalehunter.controller;
 
-import com.example.whalehunter.model.coin.CoinData;
-import com.example.whalehunter.service.coin.CoinService;
+import com.binance.api.client.BinanceApiClientFactory;
+import com.binance.api.client.BinanceApiRestClient;
+import com.example.whalehunter.config.BinanceConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@Controller
+@RestController
+@Slf4j
 public class CoinController {
 
-    private CoinService coinService;
+    private BinanceConfig binanceConfig;
 
     @Autowired
-    public CoinController(CoinService coinService) {
-        this.coinService = coinService;
+    public CoinController(
+            BinanceConfig binanceConfig) {
+        this.binanceConfig = binanceConfig;
     }
 
-    @GetMapping("/top3Coins")
-    public String getTop3Coins(Model model) throws Exception {
-        List<CoinData> coins = coinService.selectTop3coins();
-        model.addAttribute("coins", coins);
-        return "top3Coins";
+    @GetMapping("/ping")
+    public void pingTest() throws Exception {
+        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(binanceConfig.getApiKey(), binanceConfig.getSecretKey());
+        BinanceApiRestClient client = factory.newRestClient();
+        client.ping();
+
+        long serverTime = client.getServerTime();
+        System.out.println(serverTime);
     }
 }

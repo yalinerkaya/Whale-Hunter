@@ -2,8 +2,6 @@ package com.example.whalehunter.service.coin.impl;
 
 import com.example.whalehunter.model.coin.CoinData;
 import com.example.whalehunter.service.coin.CoinService;
-import net.sealake.binance.api.client.BinanceApiClientFactory;
-import net.sealake.binance.api.client.BinanceApiWebSocketClient;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -42,7 +40,7 @@ public class CoinServiceImpl implements CoinService {
 
     @PostConstruct
     public void init() {
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance();
+/*        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance();
         BinanceApiWebSocketClient webSocketClient = factory.newWebSocketClient();
 
         // subscribe to klines for all symbols
@@ -69,6 +67,6 @@ public class CoinServiceImpl implements CoinService {
             synchronized (this) {
                 filteredCoinDataList.add(coinData);
             }
-        }, KlineInterval.ONE_MINUTE);
+        }, KlineInterval.ONE_MINUTE);*/
     }
 }
