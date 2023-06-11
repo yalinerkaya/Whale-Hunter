@@ -74,16 +74,7 @@
 <table>
   <tr>
     <td>
-        <img src="https://user-images.githubusercontent.com/103566826/177922619-3d7f20d6-4066-46bd-a305-a7873a4d6102.png" width="100px" />
-    </td>
-    <td>
         <img src="https://user-images.githubusercontent.com/103566826/177922764-354c44a9-05e9-4d5c-a10c-0da6676a80a0.png" width="100px" />
-    </td>
-    <td>
-        <img src="https://user-images.githubusercontent.com/103566826/177922777-83956929-35f0-4746-a51b-98c116da2651.png" width="100px" />
-    </td>
-    <td>
-        <img src="https://user-images.githubusercontent.com/103566826/177922791-263bc0f1-bebc-4eee-bdb5-9954af5bbaf9.png" width="100px" />
     </td>
     <td>
         <img src="https://user-images.githubusercontent.com/103566826/177922794-5a47df94-fc97-4beb-a6f4-16b24e315757.png" width="100px" />
@@ -96,10 +87,7 @@
     </td>
   </tr>
   <tr>
-    <td><b>Jira</b></td>
     <td><b>Notion</b></td>
-    <td><b>Slack</b></td>
-    <td><b>Git</b></td>
     <td><b>GitHub</b></td>
     <td><b>RestDocs</b></td>
     <td><b>AsciiDocs</b></td>
