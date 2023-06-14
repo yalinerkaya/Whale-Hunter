@@ -32,6 +32,16 @@
     <td>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNVKGVT_dyDB_b758ACxJlJTKZFc6NaJvCI6Tt6V8RE5V6UnTP9ux_Pahj4DxhH7hiHeE&usqp=CAU" width="100px" />
     </td>
+  </tr>
+  <tr>
+    <td><b>Java 1.8</b></td>
+    <td><b>Gradle</b></td>
+    <td><b>Spring Boot</b></td>
+    <td><b>MySQL</b></td>
+  </tr>
+</table>
+<table>
+  <tr>
     <td>  
         <img src="https://i0.wp.com/codegym.vn/wp-content/uploads/2020/06/spring-jpa-query-5.png?fit=400%2C400&ssl=1" width="100px" />
     </td>
@@ -39,17 +49,13 @@
         <img src="https://automated-testing.info/uploads/default/original/2X/7/760cbf21278280fd7d4980c577d64da634c9fc42.png" width="100px" />
     </td>
         <td>
-        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/4bf350d8-0d63-4509-bedd-07f8e7fd0e77" width="100px" />
+        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/23894fbd-3cb4-4986-88f1-187187fc71e0" width="100px" />
     </td>
         <td>
-        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/1fd1801a-d9f3-4000-84ca-76aa0b6af2c7" width="100px" />
+        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/d50beb9c-61ff-4f38-ba1c-346a8cef3625" width="100px" />
     </td>
   </tr>
   <tr>
-    <td><b>Java 1.8</b></td>
-    <td><b>Gradle</b></td>
-    <td><b>Spring Boot</b></td>
-    <td><b>MySQL</b></td>
     <td><b>Srping Data JPA</b></td>
     <td><b>JUnit5 / Mockito</b></td>
     <td><b>Redis</b></td>
@@ -100,7 +106,7 @@
 <hr>
 
 ### ERD
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/367c61b2-3327-4f7b-a68b-784a1ba4ffc8)
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/6e7f3e1e-f060-4afe-a1e8-84750c1510b1)
 
 <hr>
 
