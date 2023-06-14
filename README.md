@@ -1,4 +1,9 @@
 # whale-hunter
+<div align="center">
+  <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/1c40f635-f819-40a0-98e6-737bf8cc97b7" width="50%"> <br>
+  <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FJayFreemandev%2FWhale-Hunter&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" width="9%">
+</div>
+<hr>
 
 ### 프로젝트 소개
 ```
