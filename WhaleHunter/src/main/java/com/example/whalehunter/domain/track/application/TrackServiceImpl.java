@@ -1,7 +1,6 @@
-package com.example.whalehunter.service.coin.impl;
+package com.example.whalehunter.domain.track.application;
 
-import com.example.whalehunter.model.coin.CoinData;
-import com.example.whalehunter.service.coin.CoinService;
+import com.example.whalehunter.domain.track.domain.CoinData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -10,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class CoinServiceImpl implements CoinService {
+public class TrackServiceImpl implements TrackService {
     private List<CoinData> filteredCoinDataList = new ArrayList<>();
 
     @Override

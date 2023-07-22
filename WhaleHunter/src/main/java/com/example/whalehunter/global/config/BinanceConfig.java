@@ -1,4 +1,4 @@
-package com.example.whalehunter.config;
+package com.example.whalehunter.global.config;
 
 import com.example.whalehunter.model.binance.Binance;
 import org.springframework.boot.context.properties.ConfigurationProperties;

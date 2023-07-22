@@ -1,2 +1,4 @@
 
 WhaleHunter/src/main/resources/application.properties
+
+*.properties

@@ -1,4 +1,4 @@
-package com.example.whalehunter.model.coin;
+package com.example.whalehunter.domain.track.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CoinData {
-    private String symbol;
+    private String symbdool;
     private double price;
     private double prevClosePrice;
     private double priceChange;

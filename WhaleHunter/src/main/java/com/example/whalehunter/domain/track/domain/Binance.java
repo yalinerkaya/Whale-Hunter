@@ -1,7 +1,8 @@
-package com.example.whalehunter.model.binance;
+package com.example.whalehunter.domain.track.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
 /**
  * Binance.java
  *

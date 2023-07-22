@@ -1,8 +1,8 @@
-package com.example.whalehunter.controller;
+package com.example.whalehunter.domain.track.api;
 
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
-import com.example.whalehunter.config.BinanceConfig;
+import com.example.whalehunter.global.config.BinanceConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class CoinController {
-
+public class TrackApi {
     private BinanceConfig binanceConfig;
 
     @Autowired
-    public CoinController(
+    public TrackApi(
             BinanceConfig binanceConfig) {
         this.binanceConfig = binanceConfig;
     }
