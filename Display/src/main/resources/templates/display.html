@@ -1,0 +1,43 @@
+<!Doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTC/USD Analytics</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.css">
+    <script th:src="@{https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.bundle.js}"></script>
+</head>
+
+<body>
+<input type="hidden" id="data_api_url" th:value="${data_api_url}">
+<br>
+<div class="columns is-centered">
+    <div class="column is-10">
+        <h1 class="title">고래를 잡자</h1>
+    </div>
+</div>
+
+<div class="columns is-centered">
+    <div class="column is-10">
+        <h3 class="has-text-centered is-italic">
+            첫번째 차트 : BTC가 나가고 있습니다..
+            두번째 차트 : BTC가 들어오고 있습니다...
+        </h3>
+    </div>
+</div>
+<br>
+<div class="columns is-centered">
+    <div class="column is-10">
+        <canvas id="sell_chart"></canvas>
+    </div>
+</div>
+
+<div class="columns is-centered">
+    <div class="column is-10">
+        <canvas id="buy_chart"></canvas>
+    </div>
+</div>
+
+<script th:src="@{/js/display.js}"></script>
+</body>
+</html>
