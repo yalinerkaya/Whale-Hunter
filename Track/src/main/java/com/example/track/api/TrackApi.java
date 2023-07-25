@@ -1,9 +1,9 @@
 package com.example.track.api;
 
+import com.example.global.common.CommonResponse;
 import com.example.track.application.TrackService;
 import com.example.track.domain.ClosePrice;
 import com.example.track.dto.ClosePriceResponse;
-import com.example.global.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/track")
 public class TrackApi {
-    private TrackService trackService;
+    private final TrackService trackService;
 
     @Autowired
     public TrackApi(TrackService trackService) {
@@ -34,6 +34,7 @@ public class TrackApi {
 
     /**
      * BTC 50일 종가 리스트 저장
+     *
      * @throws Exception
      */
     @GetMapping("/close")
@@ -45,6 +46,7 @@ public class TrackApi {
 
     /**
      * BTC 50일 이동평균선 저장
+     *
      * @throws Exception
      */
     @GetMapping("/average")
@@ -56,6 +58,7 @@ public class TrackApi {
 
     /**
      * 새로운 종가 저장
+     *
      * @throws Exception
      */
     @GetMapping("/new-close")

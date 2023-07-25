@@ -19,16 +19,24 @@ import java.util.List;
 
 public interface TrackService {
 
-    /** 50일 종가 리스트 **/
+    /**
+     * 50일 종가 리스트
+     **/
     List<ClosePriceResponse> selectBinanceClosePriceList() throws Exception;
+
     void insertClosePriceList(List<ClosePriceResponse> closePriceResponses) throws Exception;
 
-    /** 50일 이동 평균선 **/
+    /**
+     * 50일 이동 평균선
+     **/
     List<ClosePrice> selectClosePriceList() throws Exception;
 
     void insertMoveAverage(List<ClosePrice> closePrices) throws Exception;
 
-    /** 새로운 종가 **/
+    /**
+     * 새로운 종가
+     **/
     ClosePriceResponse selectBinanceClosePrice() throws Exception;
+
     void insertClosePrice(ClosePriceResponse closePriceResponse) throws Exception;
 }

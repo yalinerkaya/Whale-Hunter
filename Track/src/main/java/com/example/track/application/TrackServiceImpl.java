@@ -6,6 +6,7 @@ import com.binance.api.client.domain.market.Candlestick;
 import com.example.global.config.BinanceConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
+import com.example.global.util.DateUtils;
 import com.example.track.dao.ClosePriceRepository;
 import com.example.track.dao.MoveAverageRepository;
 import com.example.track.domain.Binance;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,28 +45,26 @@ import static com.example.global.util.TrackConstants.*;
 @Service
 public class TrackServiceImpl implements TrackService {
 
-    private ClosePriceRepository closePriceRepository;
-    private MoveAverageRepository moveAverageRepository;
+    private final ClosePriceRepository closePriceRepository;
+    private final MoveAverageRepository moveAverageRepository;
+    private final BinanceApiRestClient client;
 
     @Autowired
-    public TrackServiceImpl(
-            ClosePriceRepository closePriceRepository,
-            MoveAverageRepository moveAverageRepository) {
+    public TrackServiceImpl(ClosePriceRepository closePriceRepository, MoveAverageRepository moveAverageRepository) {
         this.closePriceRepository = closePriceRepository;
         this.moveAverageRepository = moveAverageRepository;
+        Binance binance = new BinanceConfig().binanceClient();
+        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(binance.getApiKey(), binance.getSecretKey());
+        this.client = factory.newRestClient();
     }
 
     @Override
     public List<ClosePriceResponse> selectBinanceClosePriceList() throws Exception {
-        Binance binance = new BinanceConfig().binanceClient();
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(binance.getApiKey(), binance.getSecretKey());
-        BinanceApiRestClient client = factory.newRestClient();
-
-        long endTime = Instant.now().truncatedTo(ChronoUnit.DAYS).minus(ONE, ChronoUnit.DAYS).toEpochMilli();
-        long startTime = Instant.now().truncatedTo(ChronoUnit.DAYS).minus(FIFTY, ChronoUnit.DAYS).toEpochMilli();
+        long endTime = DateUtils.getTodayStartTimeInMillis();
+        long startTime = DateUtils.getStartTimeBeforeDays(50);
 
         List<ClosePriceResponse> closePriceResponses = new ArrayList<>();
-        List<Candlestick> candlesticks = client.getCandlestickBars(BTC_USDT, DAILY, 500, startTime, endTime);
+        List<Candlestick> candlesticks = client.getCandlestickBars(BTC_USDT, DAILY, FIVE_HUNDRED_LIMIT, startTime, endTime);
 
         for (Candlestick candlestick : candlesticks) {
             LocalDateTime closeTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(candlestick.getCloseTime()), ZoneId.of(UTC));
@@ -79,8 +79,8 @@ public class TrackServiceImpl implements TrackService {
     @Transactional
     public void insertClosePriceList(List<ClosePriceResponse> closePriceResponses) throws Exception {
         List<ClosePrice> closePrices = closePriceResponses.stream()
-            .map(response -> new ClosePrice(response.getSymbol(), response.getClosingPrice(), response.getClosedAt()))
-            .collect(Collectors.toList());
+                .map(ClosePrice::createFromResponse)
+                .collect(Collectors.toList());
 
         closePriceRepository.saveAll(closePrices);
     }
@@ -88,8 +88,7 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<ClosePrice> selectClosePriceList() throws Exception {
         List<ClosePrice> allClosePrices = closePriceRepository.findAllByOrderByClosedAtDesc();
-        List<ClosePrice> latest50ClosePrices = allClosePrices.stream().limit(50).collect(Collectors.toList());
-        return latest50ClosePrices;
+        return allClosePrices.stream().limit(FIFTY).collect(Collectors.toList());
     }
 
     @Override
@@ -104,23 +103,18 @@ public class TrackServiceImpl implements TrackService {
             movingAverageValue = movingAverageValue.add(closePrices.get(i).getClosingPrice());
         }
 
-        movingAverageValue = movingAverageValue.divide(BigDecimal.valueOf(FIFTY), TWO_DECIMAL_PLACES, BigDecimal.ROUND_HALF_UP);
+        movingAverageValue = movingAverageValue.divide(BigDecimal.valueOf(FIFTY), TWO_DECIMAL_PLACES, RoundingMode.HALF_UP);
         ClosePrice recentClosePrice = closePrices.get(ZERO);
-        MoveAverage moveAverage = new MoveAverage(recentClosePrice.getClosePriceUid(),BTC_USDT, movingAverageValue, recentClosePrice.getClosedAt());
+        MoveAverage moveAverage = new MoveAverage(recentClosePrice.getClosePriceUid(), BTC_USDT, movingAverageValue, recentClosePrice.getClosedAt());
         moveAverageRepository.save(moveAverage);
     }
 
     @Override
     public ClosePriceResponse selectBinanceClosePrice() throws Exception {
-        Binance binance = new BinanceConfig().binanceClient();
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(binance.getApiKey(), binance.getSecretKey());
-        BinanceApiRestClient client = factory.newRestClient();
+        long endTime = DateUtils.getTodayStartTimeInMillis();
+        long startTime = DateUtils.getStartTimeBeforeDays(1);
 
-        long endTime = Instant.now().truncatedTo(ChronoUnit.DAYS).toEpochMilli();
-        long startTime = Instant.now().truncatedTo(ChronoUnit.DAYS).minus(ONE, ChronoUnit.DAYS).toEpochMilli();
-
-        Candlestick candlestick = client.getCandlestickBars(BTC_USDT, DAILY, 1, startTime, endTime).get(0);
-
+        Candlestick candlestick = client.getCandlestickBars(BTC_USDT, DAILY, ONE, startTime, endTime).get(ZERO);
         LocalDateTime closeTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(candlestick.getCloseTime()), ZoneId.of(UTC));
         BigDecimal closePrice = new BigDecimal(candlestick.getClose());
 
@@ -130,6 +124,6 @@ public class TrackServiceImpl implements TrackService {
     @Override
     @Transactional
     public void insertClosePrice(ClosePriceResponse closePriceResponse) throws Exception {
-        closePriceRepository.save(new ClosePrice(closePriceResponse.getSymbol(), closePriceResponse.getClosingPrice(), closePriceResponse.getClosedAt()));
+        closePriceRepository.save(ClosePrice.createFromResponse(closePriceResponse));
     }
 }

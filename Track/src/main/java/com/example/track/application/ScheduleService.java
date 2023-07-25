@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * packageName    : com.example.global.config
- * fileName       : ScheduleConfig
+ * packageName    : com.example.track.application
+ * fileName       : ScheduleService
  * author         : 정재윤
  * date           : 2023-07-24
- * description    :
+ * description    : 매일 00시가 되면 새로운 종가와 이동평균값을 계산합니다.
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
@@ -27,22 +27,22 @@ import java.util.List;
 @EnableScheduling
 @Slf4j
 public class ScheduleService {
-    private TrackService trackService;
+    private final TrackService trackService;
 
     @Autowired
     public ScheduleService(TrackService trackService) {
         this.trackService = trackService;
     }
 
-    @Scheduled(cron = "0 46 18 * * ?") // 서버의 시간대에 맞추어서 설정
-    @Async // 별도의 스레드에서 실행
+    @Scheduled(cron = "0 0 0 * * ?")
+    @Async
     public void trackMoveAverageAdd() throws Exception {
         List<ClosePrice> closePrices = trackService.selectClosePriceList();
         trackService.insertMoveAverage(closePrices);
     }
 
-    @Scheduled(cron = "0 45 18 * * ?") // 서버의 시간대에 맞추어서 설정
-    @Async // 별도의 스레드에서 실행
+    @Scheduled(cron = "0 0 0 * * ?")
+    @Async
     public void trackClosePriceAdd() throws Exception {
         ClosePriceResponse closePriceResponses = trackService.selectBinanceClosePrice();
         trackService.insertClosePrice(closePriceResponses);
