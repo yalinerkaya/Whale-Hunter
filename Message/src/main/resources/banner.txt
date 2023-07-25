@@ -8,4 +8,4 @@
        (^^^^^^^^`___    '-. |    \  __,,..--'                 `
         `````````   `'--..___\    |`
                               `-.,'
- :: Whale Hunter m  essage :: ${spring-boot.formatted-version}
+ :: Whale Hunter message :: ${spring-boot.formatted-version}
