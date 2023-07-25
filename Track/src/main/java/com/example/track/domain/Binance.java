@@ -14,10 +14,12 @@ package com.example.track.domain;
 public class Binance {
     private final String apiKey;
     private final String secretKey;
+    private final String token;
 
-    public Binance(String apiKey, String secretKey) {
+    public Binance(String apiKey, String secretKey, String token) {
         this.apiKey = apiKey;
         this.secretKey = secretKey;
+        this.token = token;
     }
 
     public String getApiKey() {
@@ -26,5 +28,9 @@ public class Binance {
 
     public String getSecretKey() {
         return secretKey;
+    }
+
+    public String getToken() {
+        return token;
     }
 }

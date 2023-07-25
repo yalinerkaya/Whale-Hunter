@@ -1,11 +1,14 @@
 package com.example.track.domain;
 
-import lombok.*;
+import com.example.track.dto.ClosePriceResponse;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 /**
  * packageName    : com.example.track.domain
  * fileName       : ClosePrice
@@ -48,6 +51,10 @@ public class ClosePrice {
         this.symbol = symbol;
         this.closingPrice = closingPrice;
         this.closedAt = closedAt;
+    }
+
+    public static ClosePrice createFromResponse(ClosePriceResponse response) {
+        return new ClosePrice(response.getSymbol(), response.getClosingPrice(), response.getClosedAt());
     }
 
     public Long getClosePriceUid() {
