@@ -150,11 +150,9 @@ class TrackClosePriceTest {
 
             // When
             trackService.insertClosePriceList(Arrays.asList(newClosePrice));
-            closePriceRepository.findOldestClosePrice();
 
             // Then
             verify(closePriceRepository).saveAll(anyList());
-            verify(closePriceRepository, times(1)).findOldestClosePrice();
         }
     }
 }
