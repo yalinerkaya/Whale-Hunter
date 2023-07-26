@@ -1,4 +1,4 @@
-package com.example.track.kafka;
+package com.example.track.domain.kafka;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -25,6 +25,14 @@ public class TradeEvent {
     private String side;
     private String qty;
     private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public String getText() {
         return text;

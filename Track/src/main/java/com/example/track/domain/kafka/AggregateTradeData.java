@@ -1,4 +1,4 @@
-package com.example.track.kafka;
+package com.example.track.domain.kafka;
 
 /**
  * packageName    : com.example.track.kafka

@@ -54,4 +54,12 @@ public class MoveAverage {
         this.moveAverage = moveAverage;
         this.closedAt = closedAt;
     }
+
+    public BigDecimal getMoveAverage() {
+        return moveAverage;
+    }
+
+    public void setMoveAverage(BigDecimal moveAverage) {
+        this.moveAverage = moveAverage;
+    }
 }

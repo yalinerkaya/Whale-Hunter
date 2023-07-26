@@ -15,6 +15,7 @@ import com.example.track.domain.MoveAverage;
 import com.example.track.dto.ClosePriceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -22,7 +23,6 @@ import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,6 +48,7 @@ public class TrackServiceImpl implements TrackService {
     private final ClosePriceRepository closePriceRepository;
     private final MoveAverageRepository moveAverageRepository;
     private final BinanceApiRestClient client;
+
 
     @Autowired
     public TrackServiceImpl(ClosePriceRepository closePriceRepository, MoveAverageRepository moveAverageRepository) {

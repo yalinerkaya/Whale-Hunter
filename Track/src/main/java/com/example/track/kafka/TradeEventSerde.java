@@ -2,6 +2,7 @@ package com.example.track.kafka;
 
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
+import com.example.track.domain.kafka.TradeEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

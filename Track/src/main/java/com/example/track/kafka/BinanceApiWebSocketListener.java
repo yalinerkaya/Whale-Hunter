@@ -1,5 +1,7 @@
 package com.example.track.kafka;
 
+import com.example.track.application.TrackSignalServiceImpl;
+import com.example.track.domain.kafka.TradeEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -7,12 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.http.WebSocket;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CountDownLatch;
+
+import static com.example.global.util.DateUtils.convertTimestampToTimeString;
 
 /**
  * packageName    : com.example.track.kafka
@@ -31,12 +32,14 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
     private final CountDownLatch latch;
     private final TradeEventKafkaProducer kafkaProducer;
     private final ObjectMapper mapper = new ObjectMapper();
-    private StringBuilder builder = new StringBuilder();
+    private final TrackSignalServiceImpl trackSignalServiceImpl;
+    private final StringBuilder builder = new StringBuilder();
     private CompletableFuture<?> completable = new CompletableFuture<>();
 
-    public BinanceApiWebSocketListener(CountDownLatch latch, TradeEventKafkaProducer kafkaProducer) {
+    public BinanceApiWebSocketListener(CountDownLatch latch, TradeEventKafkaProducer kafkaProducer, TrackSignalServiceImpl trackSignalServiceImpl) {
         this.latch = latch;
         this.kafkaProducer = kafkaProducer;
+        this.trackSignalServiceImpl = trackSignalServiceImpl;
     }
 
     @Override
@@ -44,30 +47,35 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
 
         builder.append(data);
         webSocket.request(1);
-        if (last) {
-            try {
-                String messageJson = builder.toString();
-                TradeEvent tradeEvent = mapper.readValue(messageJson, TradeEvent.class);
-                LOGGER.info("새로운 거래가 발생:\n" + messageJson);
-                if (tradeEvent.getEvent().equals("updated")) {
-                    ZonedDateTime zdt = ZonedDateTime.parse(tradeEvent.getTimestamp(), DateTimeFormatter.ISO_DATE_TIME);
-                    LocalDateTime localDateTime = LocalDateTime.of(zdt.getYear(), zdt.getMonth(), zdt.getDayOfMonth(), zdt.getHour(), zdt.getMinute());
-                    String timeString = localDateTime.toString();
-                    LOGGER.info("카프카 프로듀서로 아이템 하나를 전송합니다.");
-                    kafkaProducer.send(timeString, tradeEvent);
-                } else {
-                    LOGGER.info("새로운 이벤트 발생: " + messageJson);
-                }
 
-                builder = new StringBuilder();
-                completable.complete(null);
-                CompletionStage<?> completionStage = completable;
-                completable = new CompletableFuture<>();
-                return completionStage;
-            } catch (JsonProcessingException e) {
-                log.error("직렬화에 실패했습니다. 사유 : " + e);
-            }
+        // 마지막 메시지가 아니면 completable을 반환
+        if (!last) {
+            return completable;
         }
+
+        try {
+            String messageJson = builder.toString();
+            TradeEvent tradeEvent = mapper.readValue(messageJson, TradeEvent.class);
+            LOGGER.info("새로운 거래가 발생:\n" + messageJson);
+
+            // 매수 시그널 체크
+            trackSignalServiceImpl.processTradeEvent(tradeEvent);
+
+            if (tradeEvent.getEvent().equals("updated")) {
+                LOGGER.info("카프카 프로듀서로 아이템 하나를 전송합니다.");
+                kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent);
+            } else {
+                LOGGER.info("새로운 이벤트 발생: " + messageJson);
+            }
+
+            completable.complete(null);
+            CompletionStage<?> completionStage = completable;
+            completable = new CompletableFuture<>();
+            return completionStage;
+        } catch (JsonProcessingException e) {
+            log.error("직렬화에 실패했습니다. 사유 : " + e);
+        }
+
         return completable;
     }
 

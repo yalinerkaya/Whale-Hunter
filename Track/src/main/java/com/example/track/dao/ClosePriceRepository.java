@@ -2,6 +2,7 @@ package com.example.track.dao;
 
 import com.example.track.domain.ClosePrice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023-07-23        정재윤       최초 생성
  */
+@Repository
 public interface ClosePriceRepository extends JpaRepository<ClosePrice, Long> {
     List<ClosePrice> findAllByOrderByClosedAtDesc();
 }

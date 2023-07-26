@@ -39,4 +39,5 @@ public interface TrackService {
     ClosePriceResponse selectBinanceClosePrice() throws Exception;
 
     void insertClosePrice(ClosePriceResponse closePriceResponse) throws Exception;
+
 }

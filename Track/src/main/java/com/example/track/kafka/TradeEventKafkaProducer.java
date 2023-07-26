@@ -1,5 +1,7 @@
 package com.example.track.kafka;
 
+import com.example.track.application.KafkaProducerService;
+import com.example.track.domain.kafka.TradeEvent;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
