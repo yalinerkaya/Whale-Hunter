@@ -1,6 +1,7 @@
 package com.example.display.application;
 
 import com.example.display.domain.AggregateTradeData;
+import com.example.display.domain.Data;
 import com.example.display.dto.DisplayDataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ import java.util.*;
 @Service
 public class DisplayServiceImpl implements DisplayService {
     private final KafkaConsumerService<?> kafkaConsumerService;
-    private final Map<String, DisplayDataResponse.Data> buyDataCache = new HashMap<>(60);
-    private final Map<String, DisplayDataResponse.Data> sellDataCache = new HashMap<>(60);
+    private final Map<String, Data> buyDataCache = new HashMap<>(60);
+    private final Map<String, Data> sellDataCache = new HashMap<>(60);
 
     @Autowired
     public DisplayServiceImpl(KafkaConsumerService<?> kafkaConsumerService) {
@@ -41,13 +42,13 @@ public class DisplayServiceImpl implements DisplayService {
             }
         } else {
             tradeDataList.forEach(tradeData -> {
-                DisplayDataResponse.Data buy = new DisplayDataResponse.Data();
+                Data buy = new Data();
                 String timeBuy = tradeData.getTime();
                 buy.setTime(timeBuy);
                 buy.setValue(tradeData.getAggregateBuys());
                 buyDataCache.put(timeBuy, buy);
 
-                DisplayDataResponse.Data sell = new DisplayDataResponse.Data();
+                Data sell = new Data();
                 String timeSell = tradeData.getTime();
                 sell.setTime(timeSell);
                 sell.setValue(tradeData.getAggregateSales());

@@ -15,6 +15,9 @@ import java.util.Optional;
 @Controller
 public class DisplayApi {
 
+    private static final String DATA_API_URL = "/data";
+    private static final String VIEW_DISPLAY = "display";
+
     private final DisplayService displayService;
 
     @Autowired
@@ -24,8 +27,8 @@ public class DisplayApi {
 
     @GetMapping("/display")
     public ModelAndView display(ModelMap modelMap) {
-        modelMap.addAttribute("data_api_url", "/data");
-        return new ModelAndView("display");
+        modelMap.addAttribute("data_api_url", DATA_API_URL);
+        return new ModelAndView(VIEW_DISPLAY);
     }
 
     @GetMapping("/data")

@@ -1,6 +1,6 @@
 package com.example.display.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.example.display.domain.Data;
 
 import java.util.List;
 
@@ -33,30 +33,5 @@ public class DisplayDataResponse {
 
     public void setBuy(List<Data> buy) {
         this.buy = buy;
-    }
-
-    public static class Data {
-
-        @JsonProperty("x")
-        private String time;
-
-        @JsonProperty("y")
-        private double value;
-
-        public double getValue() {
-            return value;
-        }
-
-        public void setValue(double value) {
-            this.value = value;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
     }
 }

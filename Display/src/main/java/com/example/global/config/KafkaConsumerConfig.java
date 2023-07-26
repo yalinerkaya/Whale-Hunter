@@ -2,6 +2,8 @@ package com.example.global.config;
 
 import com.example.display.domain.AggregateTradeData;
 import com.example.display.domain.AggregateTradeDataSerde;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -25,6 +27,8 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2023-07-24        정재윤       최초 생성
  */
+@Getter
+@Setter
 @Configuration
 public class KafkaConsumerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
