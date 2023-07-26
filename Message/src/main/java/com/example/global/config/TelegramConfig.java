@@ -15,8 +15,9 @@ import org.springframework.context.annotation.Configuration;
 public class TelegramConfig {
 
     private String token;
-
     private String chat;
+
+    private String name;
 
     @Bean(name = "telegram")
     public Telegram telegramClient() {
@@ -37,6 +38,14 @@ public class TelegramConfig {
 
     public void setChat(String chat) {
         this.chat = chat;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
 

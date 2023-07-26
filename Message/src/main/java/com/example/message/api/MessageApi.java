@@ -20,4 +20,10 @@ public class MessageApi {
         messageService.sendMessage();
         return new CommonResponse<>();
     }
+
+    @PostMapping("/btc")
+    public CommonResponse<Void> likeBTC() throws Exception {
+        messageService.likeBTC();
+        return new CommonResponse<>();
+    }
 }
