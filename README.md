@@ -7,7 +7,7 @@
 
 ### 프로젝트 소개
 ```
-- 바이낸스 거래소에서 비트코인 정보를 조회하며 거대한 거래량 포착시 텔레그램에 알림을 보냅니다.
+- 거래소에서 비트코인 정보를 조회하며 매수 시점 포착시 텔레그램에 알림을 보냅니다.
 - 분산 서버 환경에서 일어날 수 있는 이슈를 시뮬레이션하고 서버의 성능 개선, 좋은 품질의 코드를 작성하기 위해 고민했습니다.
 ```
 <hr>
@@ -110,9 +110,8 @@
 ![Architecture](https://user-images.githubusercontent.com/72185011/222195610-18231737-8503-4930-b1b7-c3ba0b04d40f.png)
 <hr>
 
-### ERD
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/6e7f3e1e-f060-4afe-a1e8-84750c1510b1)
-
+### Demo
+![clideo_editor_01ebdc15970a4dcda742d52ced34ecf4](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/e6e8df3a-e5db-428a-8ca0-387ad53b1493)
 <hr>
 
 ### STRESS TEST 
@@ -192,5 +191,5 @@ Spring Rest Docs를 적용, API 호출시 발생 가능한 Error Spec 따로 기
 - 50 above those two 
 - price above 50 
 - price is above at least 30% 52 weeks low
-- price is within 25 percent 52 week high -> close and high is better -> percentage 필요
-- relative strength ranking less than 70 -> high better -> percentage 필요
+- price is within 25 percent 52 week high -> close and high is better -> percentage
+- relative strength ranking less than 70 -> high better -> percentage
