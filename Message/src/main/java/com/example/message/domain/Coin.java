@@ -32,6 +32,9 @@ public class Coin {
     @Column(name = "symbol")
     private String symbol;
 
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "like_count")
     private Integer likeCount;
 
