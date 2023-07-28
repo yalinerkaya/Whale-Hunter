@@ -107,7 +107,7 @@
 <hr>
 
 ### Architecture
-![Architecture](https://user-images.githubusercontent.com/72185011/222195610-18231737-8503-4930-b1b7-c3ba0b04d40f.png)
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/c781aa05-5d18-41c6-8694-6f4972a516c0)
 <hr>
 
 ### Demo
