@@ -11,26 +11,23 @@ spring:
                 use_sql_comments: true
 
     datasource:
-        url: jdbc:mysql://localhost:3306/track?useSSL=false&serverTimezone=UTC
+        url: jdbc:mysql://localhost:3306/track?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
         username: root
         password: root
         driver-class-name: com.mysql.cj.jdbc.Driver
     profiles:
         active: local
 kafka:
-    topic:
-        input: trade_events
-        output: trade_data
+    inputTopic: trade_events
+    outputTopic: trade_data
     servers: localhost:9091,localhost:9092,localhost:9093
     acks: all
-    extractor:
-        id: extractor
-    processor:
-        id: processor
+    extractor: extractor
+    processor: processor
 server:
     port: 8000
 
 binance:
     apiKey: KEY
     secretKey: KEY
-    token: KEY
+    token: eyJhbGciOiJFUzI1NiIsInR5cCI6IkFQSSJ9.eyJhdWQiOiJtZXJjdXJ5IiwidWlkIjoiMjU0ZGE0ODYtM2Q3Zi00NDIxLTk0NzctMWExZjg4M2FjMmJmIiwiaXNzIjoiYmxvY2tjaGFpbiIsInJkbyI6dHJ1ZSwiaWF0IjoxNjkwMjE4NzE0LCJqdGkiOiIzYWE5Mzc0Yi0zZjVjLTQ2ZjktOTk4MC1iYzI4YjM3ZTI2ZmMiLCJzZXEiOjcwMjE0NTcsIndkbCI6ZmFsc2V9.IBCD72DfeQrwdH+94RJPBFwlJUpHmhi8d/plmuiWsFC4Vp7w0uwHMKSqS+KW3gfuVxcEnivXf9IA3UEgqjWlAaU=

@@ -4,8 +4,6 @@ import com.example.global.config.BinanceConfig;
 import com.example.global.config.KafkaConfig;
 import com.example.global.exception.WhaleException;
 import com.example.track.application.TrackSignalServiceImpl;
-import com.example.track.domain.Binance;
-import com.example.track.domain.kafka.Kafka;
 import com.example.track.domain.kafka.TradeEvent;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;

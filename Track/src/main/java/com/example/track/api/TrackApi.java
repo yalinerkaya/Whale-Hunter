@@ -3,7 +3,10 @@ package com.example.track.api;
 import com.example.global.common.CommonResponse;
 import com.example.track.application.TrackService;
 import com.example.track.domain.ClosePrice;
+import com.example.track.domain.kafka.TradeEvent;
 import com.example.track.dto.ClosePriceResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,4 +70,32 @@ public class TrackApi {
         trackService.insertClosePrice(closePriceResponses);
         return new CommonResponse<>();
     }
+
+    @GetMapping("/test")
+    public void test() throws JsonProcessingException {
+        String jsonString = "{\"seqnum\":0,\"event\":\"subscribed\",\"channel\":\"trades\",\"symbol\":\"BTC-USD\"}" +
+                "{\"seqnum\":1,\"event\":\"updated\",\"channel\":\"trades\",\"symbol\":\"BTC-USD\",\"timestamp\":\"2023-07-29T14:28:08.845239Z\",\"side\":\"sell\",\"qty\":0.02513559,\"price\":29323.15,\"trade_id\":\"844437824652852\"}";
+
+        // 문자열에서 각 JSON 객체를 찾아서 파싱합니다.
+        ObjectMapper mapper = new ObjectMapper();
+        int startIndex = 0;
+        while (startIndex < jsonString.length()) {
+            int endIndex = jsonString.indexOf("}", startIndex);
+            if (endIndex == -1) {
+                break;
+            }
+
+            String json = jsonString.substring(startIndex, endIndex + 1);
+            TradeEvent tradeEvent = mapper.readValue(json, TradeEvent.class);
+            if (tradeEvent.getEvent().equals("updated")) {
+                System.out.println("카프카 프로듀서로 아이템 하나를 전송합니다.");
+                // kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent);
+            } else {
+                System.out.println("새로운 이벤트 발생: " + json);
+            }
+
+            startIndex = endIndex + 1;
+        }
+    }
+
 }
