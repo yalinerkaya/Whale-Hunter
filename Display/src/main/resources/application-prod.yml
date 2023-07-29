@@ -9,28 +9,24 @@ spring:
             hibernate:
                 format_sql: true
                 use_sql_comments: true
-
+    kafka:
+        consumer:
+            group-id: data-api
+            session-timeout-ms: 25000
+            max-poll-interval-ms: 600000
+            enable-auto-commit: false
+            max-poll-records: 30
+        bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
     datasource:
         url: jdbc:mysql://localhost:3306/track?useSSL=false&serverTimezone=UTC
         username: root
         password: root
         driver-class-name: com.mysql.cj.jdbc.Driver
     profiles:
-        active: local
-kafka:
-    topic:
-        input: trade_events
-        output: trade_data
-    servers: localhost:9091,localhost:9092,localhost:9093
-    acks: all
-    extractor:
-        id: extractor
-    processor:
-        id: processor
+        active: prod
+    thymeleaf:
+        prefix: classpath:/templates/
 server:
-    port: 8000
+    port: 8002
 
-binance:
-    apiKey: KEY
-    secretKey: KEY
-    token: KEY
+topic: trade_data

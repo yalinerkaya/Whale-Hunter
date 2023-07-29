@@ -36,6 +36,7 @@ public class StreamProcessor {
     private static final Serde<String> STRING_SERDE = Serdes.String();
     private static final String SIDE_BUY = "buy";
     private static final String SIDE_SELL = "sell";
+
     private static final String STATE_DIR = "/tmp/kafka-streams";
     private static final Aggregator<String, TradeEvent, AggregateTradeData> AGGREGATOR = ((key, tradeEvent, aggregate) -> {
         if (aggregate == null) {

@@ -48,31 +48,24 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
         builder.append(data);
         webSocket.request(1);
 
+        // 마지막 메시지가 아니면 completable을 반환
         if (!last) {
             return completable;
         }
 
         try {
             String messageJson = builder.toString();
-            ObjectMapper mapper = new ObjectMapper();
-            int startIndex = 0;
-            while (startIndex < messageJson.length()) {
-                int endIndex = messageJson.indexOf("}", startIndex);
-                if (endIndex == -1) {
-                    break;
-                }
+            TradeEvent tradeEvent = mapper.readValue(messageJson, TradeEvent.class);
+            LOGGER.info("새로운 거래가 발생:\n" + messageJson);
 
-                String json = messageJson.substring(startIndex, endIndex + 1);
-                TradeEvent tradeEvent = mapper.readValue(json, TradeEvent.class);
-                if (tradeEvent.getEvent().equals("updated")) {
-                    System.out.println("카프카 프로듀서로 아이템 하나를 전송합니다. " + tradeEvent.getSide());
-                    kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent);
-                    trackSignalServiceImpl.processTradeEvent(tradeEvent);
-                } else {
-                    System.out.println("새로운 이벤트 발생: " + json);
-                }
+            // 매수 시그널 체크
+            trackSignalServiceImpl.processTradeEvent(tradeEvent);
 
-                startIndex = endIndex + 1;
+            if (tradeEvent.getEvent().equals("updated")) {
+                LOGGER.info("카프카 프로듀서로 아이템 하나를 전송합니다.");
+                kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent);
+            } else {
+                LOGGER.info("새로운 이벤트 발생: " + messageJson);
             }
 
             completable.complete(null);
