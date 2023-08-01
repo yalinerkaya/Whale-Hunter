@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/Display" />
+    <file type="web" url="file://$PROJECT_DIR$/Gateway" />
+    <file type="web" url="file://$PROJECT_DIR$/Message" />
+    <file type="web" url="file://$PROJECT_DIR$/Track" />
     <file type="web" url="file://$PROJECT_DIR$/WhaleHunter" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/out" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="corretto-11" project-jdk-type="JavaSDK" />
 </project>
