@@ -9,16 +9,8 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
-  kafka:
-    consumer:
-      group-id: data-api
-      session-timeout-ms: 25000
-      max-poll-interval-ms: 600000
-      enable-auto-commit: false
-      max-poll-records: 30
-    bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
   datasource:
-    url: jdbc:mysql://localhost:3306/track?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/message?useSSL=false&serverTimezone=UTC
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -28,7 +20,6 @@ spring:
     prefix: classpath:/templates/
 server:
   port: 8003
-
 telegram:
   token: TOKEN
   charId: CHAT ID
