@@ -15,9 +15,12 @@ public class Telegram {
     private final String chat;
     private final String token;
 
-    public Telegram(String chat, String token) {
+    private final String name;
+
+    public Telegram(String chat, String token, String name) {
         this.chat = chat;
         this.token = token;
+        this.name = name;
     }
 
     public String getChat() {
@@ -28,4 +31,7 @@ public class Telegram {
         return token;
     }
 
+    public String getName() {
+        return name;
+    }
 }

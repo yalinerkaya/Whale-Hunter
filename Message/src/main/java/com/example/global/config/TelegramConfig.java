@@ -21,7 +21,7 @@ public class TelegramConfig {
 
     @Bean(name = "telegram")
     public Telegram telegramClient() {
-        return new Telegram(this.token, this.chat);
+        return new Telegram(this.token, this.chat, this.name);
     }
 
     public String getToken() {
