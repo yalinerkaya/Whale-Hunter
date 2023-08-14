@@ -12,6 +12,15 @@ java {
     sourceCompatibility = "11"
 }
 
+processResources.dependsOn('copySecret')
+
+tasks.register('copySecret', Copy) {
+    from 'Whale-Hunter-Submodule/Track'
+    include "application*.yml"  // 복사할 파일들
+    into 'src/main/resources'  // 복사 위치
+}
+
+
 repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
@@ -41,6 +50,10 @@ dependencies {
     implementation group: 'org.glassfish.tyrus', name: 'tyrus-client', version: '1.15'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.7'
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.7'
 }
 
 targetCompatibility = JavaVersion.VERSION_11

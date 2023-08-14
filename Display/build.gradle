@@ -29,6 +29,9 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.24'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.7'
+
 }
 
 targetCompatibility = JavaVersion.VERSION_11

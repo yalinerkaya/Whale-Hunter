@@ -1,0 +1,3 @@
+[submodule "Whale-Hunter-Submodule"]
+	path = Whale-Hunter-Submodule
+	url = https://github.com/JayFreemandev/Whale-Hunter-Submodule.git
