@@ -1,5 +1,3 @@
-
-
 Message/.gradle/
 
 *.yml
@@ -13,7 +11,5 @@ data/
 Display/.gradle/
 
 Gateway/.gradle/
-
-Gateway/gradle/
 
 Track/build/
