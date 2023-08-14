@@ -12,6 +12,14 @@ java {
     sourceCompatibility = "11"
 }
 
+task copySecret(type: Copy) {
+    from file("${rootProject.projectDir.parent}/Whale-Hunter-Submodule/Message")
+    include "application*.yml"
+    into 'src/main/resources'
+}
+
+processResources.dependsOn('copySecret')
+
 repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
