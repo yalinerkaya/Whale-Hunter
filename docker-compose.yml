@@ -85,3 +85,15 @@ services:
     ports:
       - "3306:3306"
     restart: always
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      STORAGE_TYPE: mem
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+      - mysql
