@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
  * 2023-08-02        정재윤       최초 생성
  */
 
-@FeignClient(value ="message-service")
+@FeignClient(value ="api-gateway")
 public interface MessageFeignClient {
-    @PostMapping("/up")
+    @PostMapping("/message-service/up")
     public CommonResponse<Void> priceBreakout();
 
-    @PostMapping("/down")
+    @PostMapping("/message-service/down")
     public CommonResponse<Void> priceBreakdown();
 
-    @GetMapping("/status")
+    @GetMapping("/message-service/status")
     public CommonResponse<CoinStatusResponse> checkBTCStatus();
 }
