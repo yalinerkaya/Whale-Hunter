@@ -10,5 +10,4 @@ public class WhaleHunterApplication {
     public static void main(String[] args) {
         SpringApplication.run(WhaleHunterApplication.class, args);
     }
-
 }
