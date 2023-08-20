@@ -27,6 +27,8 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:3.1.7'
+    implementation 'io.micrometer:micrometer-core:1.10.6'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.6'
 }
 
 tasks.named('test') {

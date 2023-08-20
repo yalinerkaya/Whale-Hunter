@@ -32,6 +32,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.0'
+    implementation 'io.micrometer:micrometer-core:1.10.6'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.6'
     implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin:3.1.0'
     implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.1'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
