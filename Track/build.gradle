@@ -36,7 +36,10 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:1.10.6'
     implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin:3.1.0'
     implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.1'
+    // https://mvnrepository.com/artifact/io.github.openfeign/feign-jackson
+    implementation 'io.github.openfeign:feign-jackson:9.3.1'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
     implementation("net.openhft.com.binance.api:binance-api-client:2.17.1")
