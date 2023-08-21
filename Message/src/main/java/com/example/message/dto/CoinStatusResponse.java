@@ -1,9 +1,6 @@
 package com.example.message.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * packageName    : com.example.message.dto
@@ -18,8 +15,7 @@ import lombok.Setter;
  */
 
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class CoinStatusResponse {
     private String status;

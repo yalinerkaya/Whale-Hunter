@@ -7,7 +7,5 @@ public interface MessageService {
 
     void priceBreakdown() throws Exception;
 
-    void likeBTC() throws Exception;
-
     CoinStatusResponse selectBTCStatus() throws Exception;
 }

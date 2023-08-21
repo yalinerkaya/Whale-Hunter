@@ -2,6 +2,7 @@ package com.example.message.domain;
 
 import com.example.global.config.TelegramConfig;
 import com.example.message.MessageApplication;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +12,8 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import static com.example.global.util.MessageConstants.*;
 
 /**
  * packageName    : com.example.track.domain
@@ -24,22 +27,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * 2023-07-24        Jay       최초 생성
  */
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
-    private static final String COMMAND_BTC = "/btc";
-    private static final String MESSAGE_TEXT_BTC = "BTC 떡상 기원";
-    private static final String LOCALHOST_ENDPOINT = "http://localhost:8003/btc";
 
     private final TelegramConfig telegramConfig;
-
-    @Autowired
-    public TelegramBot(TelegramConfig telegramConfig) {
-        this.telegramConfig = telegramConfig;
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(MessageApplication.class, args);
-    }
 
     @Override
     public String getBotUsername() {
