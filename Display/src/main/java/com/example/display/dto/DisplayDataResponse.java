@@ -7,13 +7,13 @@ import java.util.List;
 /**
  * packageName    : com.example.display.dto
  * fileName       : DisplayDataResponse
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
  */
 public class DisplayDataResponse {
     private List<Data> sell;

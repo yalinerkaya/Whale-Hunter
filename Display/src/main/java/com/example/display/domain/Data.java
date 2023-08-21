@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * packageName    : com.example.display.domain
  * fileName       : Data
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-27
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-27        정재윤       최초 생성
+ * 2023-07-27        Jay       최초 생성
  */
 public class Data {
     @JsonProperty("x")
