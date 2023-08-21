@@ -2,7 +2,9 @@ package com.example.global.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -20,16 +22,18 @@ import java.util.Map;
 /**
  * packageName    : com.example.global.config
  * fileName       : KafkaConsumerConfig
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Configuration
 public class KafkaConsumerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
@@ -57,7 +61,6 @@ public class KafkaConsumerConfig {
 
     @Bean
     public KafkaConsumer<String, String> kafkaConsumerBean() {
-
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, enableAutocommit);

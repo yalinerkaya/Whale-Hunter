@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 /**
  * packageName    : com.example.message.domain
  * fileName       : KafkaMessageConsumer
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-08-21
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-08-21        정재윤       최초 생성
+ * 2023-08-21        Jay       최초 생성
  */
 @Component
 public class KafkaMessageConsumer {

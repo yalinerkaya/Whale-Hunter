@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 /**
  * packageName    : com.example.message.dto
@@ -20,20 +19,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CoinStatusResponse {
     private String status;
-    public CoinStatusResponse() {
-    }
-
-    public CoinStatusResponse(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

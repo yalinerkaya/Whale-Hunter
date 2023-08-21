@@ -1,6 +1,8 @@
 package com.example.message.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -18,9 +20,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CoinMessageRequest {
-    private final Message message;
-    public CoinMessageRequest(Message message) {
-        this.message = message;
-    }
+    private Message message;
 }

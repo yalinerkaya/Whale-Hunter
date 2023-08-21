@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MessageApi {
-    private MessageService messageService;
+    private final MessageService messageService;
 
     @Autowired
     public MessageApi(MessageService messageService) {

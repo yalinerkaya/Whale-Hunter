@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
 @EnableEurekaClient
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.example.message", "com.example.global.config"})
