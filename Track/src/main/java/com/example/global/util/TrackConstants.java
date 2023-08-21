@@ -37,4 +37,7 @@ public class TrackConstants {
     public static final String CHANNEL = "trades";
     public static final String SYMBOL = "BTC-USD";
     public static final int CONNECTION_TIMEOUT_MS = 10000;
+
+    public static final String MIDNIGHT = "0 0 0 * * ?";
+    public static final String MIDNIGHT_10_SECONDS = "10 0 0 * * ?";
 }

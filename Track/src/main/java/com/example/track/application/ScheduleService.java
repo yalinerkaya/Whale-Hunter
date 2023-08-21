@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.example.global.util.TrackConstants.MIDNIGHT;
+import static com.example.global.util.TrackConstants.MIDNIGHT_10_SECONDS;
+
 /**
  * packageName    : com.example.track.application
  * fileName       : ScheduleService
@@ -34,14 +37,14 @@ public class ScheduleService {
     private final TrackService trackService;
     private final TrackSignalService trackSignalService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = MIDNIGHT_10_SECONDS)
     @Async
     public void trackMoveAverageAdd() throws Exception {
         List<ClosePrice> closePrices = trackService.selectClosePriceList();
         trackService.insertMoveAverage(closePrices);
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = MIDNIGHT)
     @Async
     @CacheEvict(value = "latestMoveAverage", allEntries = true)
     public void trackClosePriceAdd() throws Exception {
