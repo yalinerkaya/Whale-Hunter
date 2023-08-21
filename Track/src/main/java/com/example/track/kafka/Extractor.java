@@ -4,15 +4,12 @@ import com.example.global.config.BinanceConfig;
 import com.example.global.config.KafkaConfig;
 import com.example.global.exception.WhaleException;
 import com.example.track.application.TrackSignalServiceImpl;
-import com.example.track.domain.kafka.TradeEvent;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -22,6 +19,8 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+
+import static com.example.global.util.TrackConstants.*;
 
 
 /**
@@ -36,35 +35,26 @@ import java.util.concurrent.CountDownLatch;
  * 2023-07-25        Jay       최초 생성
  */
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class Extractor {
-    private static final String EXCHANGE_ORIGIN = "https://exchange.blockchain.com";
-    private static final String WEBSOCKET_URI = "wss://ws.blockchain.info/mercury-gateway/v1/ws";
-    private static final String CHANNEL_SUBSCRIPTION = "채널 구독 BTC-USD";
-
-    private static final String ACTION = "subscribe";
-    private static final String CHANNEL = "trades";
-    private static final String SYMBOL = "BTC-USD";
-    private static final int CONNECTION_TIMEOUT_MS = 10000;
     private final TrackSignalServiceImpl trackSignalServiceImpl;
 
     private final KafkaConfig kafkaConfig;
 
     private final BinanceConfig binanceConfig;
 
-    @Autowired
-    public Extractor(TrackSignalServiceImpl trackSignalServiceImpl, KafkaConfig kafkaConfig, BinanceConfig binanceConfig) {
-        this.trackSignalServiceImpl = trackSignalServiceImpl;
-        this.kafkaConfig = kafkaConfig;
-        this.binanceConfig = binanceConfig;
-    }
 
     public CountDownLatch start() throws WhaleException {
         CountDownLatch latch = new CountDownLatch(1);
         BinanceApiWebSocketListener listener = new BinanceApiWebSocketListener(latch, kafkaProducer(), trackSignalServiceImpl);
         HttpClient client = HttpClient.newHttpClient();
 
-        WebSocket webSocket = client.newWebSocketBuilder().header("Origin", EXCHANGE_ORIGIN).connectTimeout(Duration.ofMillis(CONNECTION_TIMEOUT_MS)).buildAsync(URI.create(WEBSOCKET_URI), listener).join();
+        WebSocket webSocket = client.newWebSocketBuilder()
+            .header("Origin", EXCHANGE_ORIGIN)
+            .connectTimeout(Duration.ofMillis(CONNECTION_TIMEOUT_MS))
+            .buildAsync(URI.create(WEBSOCKET_URI), listener)
+            .join();
 
         Map<String, Object> msgMap = new HashMap<>();
         msgMap.put("token", binanceConfig.getToken());

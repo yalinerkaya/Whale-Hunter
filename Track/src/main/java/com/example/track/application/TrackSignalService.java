@@ -1,6 +1,6 @@
 package com.example.track.application;
 
-import com.example.track.domain.kafka.TradeEvent;
+import com.example.track.kafka.TradeEvent;
 
 import java.math.BigDecimal;
 

@@ -1,8 +1,6 @@
 package com.example.track.kafka;
 
 import com.example.global.config.KafkaConfig;
-import com.example.track.domain.kafka.AggregateTradeData;
-import com.example.track.domain.kafka.TradeEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -11,12 +9,12 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
+
+import static com.example.global.util.TrackConstants.*;
 
 /**
  * packageName    : com.example.track.kafka
@@ -35,9 +33,6 @@ public class StreamProcessor {
     private static final Serde<TradeEvent> TRADE_DATA_SERDE = Serdes.serdeFrom(new TradeEventSerde(), new TradeEventSerde());
     private static final Serde<AggregateTradeData> TRADE_AGGREGATE_SERDE = Serdes.serdeFrom(new AggregateTradeDataSerde(), new AggregateTradeDataSerde());
     private static final Serde<String> STRING_SERDE = Serdes.String();
-    private static final String SIDE_BUY = "buy";
-    private static final String SIDE_SELL = "sell";
-    private static final String STATE_DIR = "/tmp/kafka-streams";
     private static final Aggregator<String, TradeEvent, AggregateTradeData> AGGREGATOR = ((key, tradeEvent, aggregate) -> {
         if (aggregate == null) {
             aggregate = new AggregateTradeData();

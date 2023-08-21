@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "move_average")
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MoveAverage {
     @Id
@@ -55,11 +54,4 @@ public class MoveAverage {
         this.closedAt = closedAt;
     }
 
-    public BigDecimal getMoveAverage() {
-        return moveAverage;
-    }
-
-    public void setMoveAverage(BigDecimal moveAverage) {
-        this.moveAverage = moveAverage;
-    }
 }

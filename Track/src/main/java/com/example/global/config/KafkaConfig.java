@@ -1,6 +1,6 @@
 package com.example.global.config;
 
-import com.example.track.domain.kafka.Kafka;
+import com.example.track.kafka.Kafka;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

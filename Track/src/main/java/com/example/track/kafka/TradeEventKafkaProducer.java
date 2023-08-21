@@ -1,12 +1,8 @@
 package com.example.track.kafka;
 
-import com.example.track.application.KafkaProducerService;
-import com.example.track.domain.kafka.TradeEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * packageName    : com.example.track.kafka

@@ -5,12 +5,11 @@ import com.example.global.common.SignalType;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.track.dao.MoveAverageRepository;
-import com.example.track.domain.kafka.TradeEvent;
+import com.example.track.kafka.TradeEvent;
 import com.example.track.kafka.TradeTestKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 

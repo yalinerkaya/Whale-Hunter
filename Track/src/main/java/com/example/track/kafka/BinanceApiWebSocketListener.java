@@ -1,9 +1,9 @@
 package com.example.track.kafka;
 
 import com.example.track.application.TrackSignalServiceImpl;
-import com.example.track.domain.kafka.TradeEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.http.WebSocket;
@@ -25,6 +25,7 @@ import static com.example.global.util.DateUtils.convertTimestampToTimeString;
  * 2023-07-24        Jay       최초 생성
  */
 @Slf4j
+@RequiredArgsConstructor
 public class BinanceApiWebSocketListener implements WebSocket.Listener {
     private final CountDownLatch latch;
     private final TradeEventKafkaProducer kafkaProducer;
@@ -32,12 +33,6 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
     private final TrackSignalServiceImpl trackSignalServiceImpl;
     private final StringBuilder builder = new StringBuilder();
     private CompletableFuture<?> completable = new CompletableFuture<>();
-
-    public BinanceApiWebSocketListener(CountDownLatch latch, TradeEventKafkaProducer kafkaProducer, TrackSignalServiceImpl trackSignalServiceImpl) {
-        this.latch = latch;
-        this.kafkaProducer = kafkaProducer;
-        this.trackSignalServiceImpl = trackSignalServiceImpl;
-    }
 
     @Override
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
@@ -52,12 +47,9 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
         try {
             String messageJson = builder.toString();
             TradeEvent tradeEvent = mapper.readValue(messageJson, TradeEvent.class);
-            log.info("새로운 거래가 발생:\n" + messageJson);
 
             if (tradeEvent.getPrice() != null) {
-                CompletableFuture<Void> processFuture = CompletableFuture.runAsync(() -> {
-                    trackSignalServiceImpl.processTradeEvent(tradeEvent);
-                });
+                CompletableFuture.runAsync(() -> {trackSignalServiceImpl.processTradeEvent(tradeEvent);});
             }
 
             if (tradeEvent.getEvent().equals("updated")) {
@@ -70,13 +62,6 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
             } else {
                 log.info("새로운 이벤트 발생: " + messageJson);
             }
-
-/*            if (tradeEvent.getEvent().equals("updated")) {
-                log.info("카프카 프로듀서로 아이템 하나를 전송합니다.");
-                kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent);
-            } else {
-                log.info("새로운 이벤트 발생: " + messageJson);
-            }*/
 
             completable.complete(null);
             CompletionStage<?> completionStage = completable;
@@ -91,7 +76,7 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
 
     @Override
     public void onOpen(WebSocket webSocket) {
-        log.info("🥕🥕🥕🥕웹소켓 연결 성공🥕🥕🥕🥕");
+        log.info("웹소켓 연결 성공");
         webSocket.request(1);
     }
 
@@ -103,7 +88,7 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
 
     @Override
     public void onError(WebSocket webSocket, Throwable error) {
-        log.error("웹소켓 연결 실패🥕🥕🥕🥕 사유 : ", error);
+        log.error("웹소켓 연결 실패 사유 : ", error);
         latch.countDown();
     }
 }

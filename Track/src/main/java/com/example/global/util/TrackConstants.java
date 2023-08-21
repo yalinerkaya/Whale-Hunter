@@ -24,4 +24,17 @@ public class TrackConstants {
     public static final int FIVE_HUNDRED_LIMIT= 500;
 
     public static final int TWO_DECIMAL_PLACES = 2;
+
+    public static final String SIDE_BUY = "buy";
+    public static final String SIDE_SELL = "sell";
+    public static final String STATE_DIR = "/tmp/kafka-streams";
+
+    public static final String EXCHANGE_ORIGIN = "https://exchange.blockchain.com";
+    public static final String WEBSOCKET_URI = "wss://ws.blockchain.info/mercury-gateway/v1/ws";
+    public static final String CHANNEL_SUBSCRIPTION = "채널 구독 BTC-USD";
+
+    public static final String ACTION = "subscribe";
+    public static final String CHANNEL = "trades";
+    public static final String SYMBOL = "BTC-USD";
+    public static final int CONNECTION_TIMEOUT_MS = 10000;
 }
