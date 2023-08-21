@@ -1,8 +1,11 @@
-package com.example.message.domain;
+package com.example.message.kafka;
 
 import com.example.message.application.MessageService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+
+import static com.example.global.util.MessageConstants.DOWN;
+import static com.example.global.util.MessageConstants.UP;
 
 /**
  * packageName    : com.example.message.domain
@@ -26,6 +29,13 @@ public class KafkaMessageConsumer {
     @KafkaListener(topics = "trade_test", groupId = "data-api")
     public void consumeTradeEvent(String current) throws Exception {
         String lastBtcStatus = messageService.selectBTCStatus().getStatus();
-        messageService.priceBreakout();
+
+        if(current.equals(UP) && lastBtcStatus.equals(DOWN)){
+            messageService.priceBreakout();
+        }
+
+        if(current.equals(DOWN) && lastBtcStatus.equals(UP)){
+            messageService.priceBreakdown();
+        }
     }
 }

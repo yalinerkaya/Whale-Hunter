@@ -1,7 +1,7 @@
 package com.example.global.config;
 
-import com.example.display.domain.AggregateTradeData;
-import com.example.display.domain.AggregateTradeDataSerde;
+import com.example.display.kafka.AggregateTradeData;
+import com.example.display.kafka.AggregateTradeDataSerde;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.consumer.ConsumerConfig;

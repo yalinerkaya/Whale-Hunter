@@ -1,6 +1,6 @@
 package com.example.display.application;
 
-import com.example.display.domain.AggregateTradeData;
+import com.example.display.kafka.AggregateTradeData;
 import com.example.display.domain.Data;
 import com.example.display.dto.DisplayDataResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.display.application;
 
-import com.example.display.domain.AggregateTradeData;
+import com.example.display.kafka.AggregateTradeData;
 import com.example.global.config.KafkaConsumerConfig;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.KafkaConsumer;

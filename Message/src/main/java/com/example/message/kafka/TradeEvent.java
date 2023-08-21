@@ -1,4 +1,4 @@
-package com.example.message.domain;
+package com.example.message.kafka;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
