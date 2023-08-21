@@ -86,6 +86,17 @@ services:
       - "3306:3306"
     restart: always
 
+  # MySQL Server Exporter
+  mysql-exporter:
+    image: prom/mysqld-exporter:latest
+    ports:
+      - 9104:9104
+    command:
+      - "--mysqld.username=root:root"
+      - "--mysqld.address=localhost:3306"
+    depends_on:
+      - mysql
+
   zipkin:
     image: openzipkin/zipkin
     ports:
@@ -97,3 +108,27 @@ services:
       - kafka2
       - kafka3
       - mysql
+
+  prometheus:
+    image: prom/prometheus:v2.37.6
+    container_name: prometheus
+    volumes:
+      - ./prometheus/config:/etc/prometheus
+      - ./prometheus/volume:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+    restart: always
+
+  grafana:
+    image: grafana/grafana:9.4.7
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/volume:/var/lib/grafana
+    restart: always
