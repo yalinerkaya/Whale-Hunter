@@ -4,7 +4,6 @@ import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,9 +25,5 @@ public class DateUtils {
         ZonedDateTime zdt = ZonedDateTime.parse(timestamp, DateTimeFormatter.ISO_DATE_TIME);
         LocalDateTime localDateTime = LocalDateTime.of(zdt.getYear(), zdt.getMonth(), zdt.getDayOfMonth(), zdt.getHour(), zdt.getMinute());
         return localDateTime.toString();
-    }
-
-    public static LocalDate getToday() {
-        return LocalDate.now();
     }
 }

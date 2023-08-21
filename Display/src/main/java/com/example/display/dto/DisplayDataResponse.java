@@ -1,6 +1,10 @@
 package com.example.display.dto;
 
 import com.example.display.domain.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -15,23 +19,10 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023-07-24        Jay       최초 생성
  */
+@Getter
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 public class DisplayDataResponse {
     private List<Data> sell;
     private List<Data> buy;
-
-    public List<Data> getSell() {
-        return sell;
-    }
-
-    public void setSell(List<Data> sell) {
-        this.sell = sell;
-    }
-
-    public List<Data> getBuy() {
-        return buy;
-    }
-
-    public void setBuy(List<Data> buy) {
-        this.buy = buy;
-    }
 }

@@ -1,5 +1,10 @@
 package com.example.display.domain;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 /**
  * packageName    : com.example.track.kafka
  * fileName       : AggregateTradeData
@@ -11,32 +16,11 @@ package com.example.display.domain;
  * -----------------------------------------------------------
  * 2023-07-24        Jay       최초 생성
  */
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class AggregateTradeData {
     private String time;
     private double aggregateSales;
     private double aggregateBuys;
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public double getAggregateSales() {
-        return aggregateSales;
-    }
-
-    public void setAggregateSales(double aggregateSales) {
-        this.aggregateSales = aggregateSales;
-    }
-
-    public double getAggregateBuys() {
-        return aggregateBuys;
-    }
-
-    public void setAggregateBuys(double aggregateBuys) {
-        this.aggregateBuys = aggregateBuys;
-    }
 }

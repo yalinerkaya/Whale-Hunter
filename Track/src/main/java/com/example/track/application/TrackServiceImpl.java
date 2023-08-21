@@ -13,6 +13,7 @@ import com.example.track.domain.Binance;
 import com.example.track.domain.ClosePrice;
 import com.example.track.domain.MoveAverage;
 import com.example.track.dto.ClosePriceResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,6 @@ public class TrackServiceImpl implements TrackService {
     private final ClosePriceRepository closePriceRepository;
     private final MoveAverageRepository moveAverageRepository;
     private final BinanceApiRestClient client;
-
-
     @Autowired
     public TrackServiceImpl(ClosePriceRepository closePriceRepository, MoveAverageRepository moveAverageRepository) {
         this.closePriceRepository = closePriceRepository;

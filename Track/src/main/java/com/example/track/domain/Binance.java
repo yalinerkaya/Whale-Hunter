@@ -1,5 +1,10 @@
 package com.example.track.domain;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 /**
  * packageName    : com.example.track.domain
  * fileName       : Binance
@@ -11,26 +16,11 @@ package com.example.track.domain;
  * -----------------------------------------------------------
  * 2023-07-24        Jay       최초 생성
  */
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Binance {
-    private final String apiKey;
-    private final String secretKey;
-    private final String token;
-
-    public Binance(String apiKey, String secretKey, String token) {
-        this.apiKey = apiKey;
-        this.secretKey = secretKey;
-        this.token = token;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public String getToken() {
-        return token;
-    }
+    private String apiKey;
+    private String secretKey;
+    private String token;
 }

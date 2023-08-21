@@ -1,9 +1,6 @@
 package com.example.track.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * packageName    : com.example.message.dto
@@ -17,9 +14,8 @@ import lombok.Setter;
  * 2023-07-26        Jay       최초 생성
  */
 @Getter
-@Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CoinStatusResponse {
     private String status;
 }

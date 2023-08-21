@@ -1,7 +1,9 @@
 package com.example.track.domain;
 
 import com.example.track.dto.ClosePriceResponse;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -23,7 +25,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "close_price")
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClosePrice {
 
     @Id
@@ -44,9 +46,6 @@ public class ClosePrice {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public ClosePrice() {
-    }
-
     public ClosePrice(String symbol, BigDecimal closingPrice, LocalDateTime closedAt) {
         this.symbol = symbol;
         this.closingPrice = closingPrice;
@@ -55,17 +54,5 @@ public class ClosePrice {
 
     public static ClosePrice createFromResponse(ClosePriceResponse response) {
         return new ClosePrice(response.getSymbol(), response.getClosingPrice(), response.getClosedAt());
-    }
-
-    public Long getClosePriceUid() {
-        return closePriceUid;
-    }
-
-    public BigDecimal getClosingPrice() {
-        return closingPrice;
-    }
-
-    public LocalDateTime getClosedAt() {
-        return closedAt;
     }
 }

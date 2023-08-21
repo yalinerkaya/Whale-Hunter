@@ -1,7 +1,6 @@
 package com.example.track.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,27 +18,10 @@ import java.time.LocalDateTime;
  */
 
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class ClosePriceResponse {
-    private final String symbol;
-    private final BigDecimal closingPrice;
-    private final LocalDateTime closedAt;
-
-    public ClosePriceResponse(String symbol, BigDecimal closingPrice, LocalDateTime closedAt) {
-        this.symbol = symbol;
-        this.closingPrice = closingPrice;
-        this.closedAt = closedAt;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public BigDecimal getClosingPrice() {
-        return closingPrice;
-    }
-
-    public LocalDateTime getClosedAt() {
-        return closedAt;
-    }
+    private String symbol;
+    private BigDecimal closingPrice;
+    private LocalDateTime closedAt;
 }

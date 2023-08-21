@@ -2,6 +2,7 @@ package com.example.track.application;
 
 import com.example.track.domain.ClosePrice;
 import com.example.track.dto.ClosePriceResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,17 +26,13 @@ import java.util.List;
  */
 
 @Service
+@RequiredArgsConstructor
 @EnableScheduling
 @Slf4j
 public class ScheduleService {
+
     private final TrackService trackService;
     private final TrackSignalService trackSignalService;
-
-    @Autowired
-    public ScheduleService(TrackService trackService, TrackSignalService trackSignalService) {
-        this.trackService = trackService;
-        this.trackSignalService = trackSignalService;
-    }
 
     @Scheduled(cron = "0 0 0 * * ?")
     @Async

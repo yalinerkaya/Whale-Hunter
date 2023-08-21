@@ -8,6 +8,7 @@ import com.example.track.dao.MoveAverageRepository;
 import com.example.track.domain.kafka.TradeEvent;
 import com.example.track.kafka.TradeTestKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,17 +28,12 @@ import java.util.concurrent.CompletableFuture;
  * -----------------------------------------------------------
  * 2023-07-26        Jay       최초 생성
  */
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class TrackSignalServiceImpl implements TrackSignalService {
     private final MoveAverageRepository moveAverageRepository;
     private final TradeTestKafkaProducer kafkaProducer = new CommonKafkaProducer().createTradeEventKafkaProducer();
-
-    @Autowired
-    public TrackSignalServiceImpl(
-            MoveAverageRepository moveAverageRepository) {
-        this.moveAverageRepository = moveAverageRepository;
-    }
 
     @Override
     @Cacheable("latestMoveAverage")
