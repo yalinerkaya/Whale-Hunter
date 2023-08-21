@@ -6,7 +6,6 @@ import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
-import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -16,13 +15,13 @@ import java.util.Map;
 /**
  * packageName    : com.example.global.common
  * fileName       : CustomDecoder
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-08-20
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-08-20        정재윤       최초 생성
+ * 2023-08-20        Jay       최초 생성
  */
 public class CustomDecoder implements Decoder {
     private final Decoder decoder;

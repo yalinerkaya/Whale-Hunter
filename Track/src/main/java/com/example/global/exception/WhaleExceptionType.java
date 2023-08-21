@@ -1,17 +1,15 @@
 package com.example.global.exception;
 
-import org.springframework.http.HttpStatus;
-
 /**
  * packageName    : com.example.global.exception
  * fileName       : WhaleExceptionType
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
  */
 public enum WhaleExceptionType {
     /** SYSTEM EXCEPTION **/
