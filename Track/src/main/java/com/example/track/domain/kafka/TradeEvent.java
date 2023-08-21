@@ -25,6 +25,15 @@ public class TradeEvent {
     private String side;
     private String qty;
     private String price;
+    private String lastClosePrice;
+
+    public String getLastClosePrice() {
+        return lastClosePrice;
+    }
+
+    public void setLastClosePrice(String lastClosePrice) {
+        this.lastClosePrice = lastClosePrice;
+    }
 
     public String getPrice() {
         return price;
@@ -96,5 +105,11 @@ public class TradeEvent {
 
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public static TradeEvent CurrentTrade (String lastClosePrice){
+        TradeEvent tradeEvent = new TradeEvent();
+        tradeEvent.setLastClosePrice(lastClosePrice);
+        return  tradeEvent;
     }
 }

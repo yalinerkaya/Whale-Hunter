@@ -2,6 +2,7 @@ package com.example.track.api;
 
 import com.example.global.common.CommonResponse;
 import com.example.track.application.TrackService;
+import com.example.track.application.TrackSignalService;
 import com.example.track.domain.ClosePrice;
 import com.example.track.dto.ClosePriceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,12 @@ import java.util.List;
 @RequestMapping("/track")
 public class TrackApi {
     private final TrackService trackService;
+    private final TrackSignalService trackSignalService;
 
     @Autowired
-    public TrackApi(TrackService trackService) {
+    public TrackApi(TrackService trackService, TrackSignalService trackSignalService) {
         this.trackService = trackService;
+        this.trackSignalService = trackSignalService;
     }
 
     /**
@@ -68,3 +71,4 @@ public class TrackApi {
         return new CommonResponse<>();
     }
 }
+

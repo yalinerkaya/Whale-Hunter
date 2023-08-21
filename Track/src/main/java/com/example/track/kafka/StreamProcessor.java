@@ -3,6 +3,7 @@ package com.example.track.kafka;
 import com.example.global.config.KafkaConfig;
 import com.example.track.domain.kafka.AggregateTradeData;
 import com.example.track.domain.kafka.TradeEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -20,23 +21,22 @@ import java.util.Properties;
 /**
  * packageName    : com.example.track.kafka
  * fileName       : StreamProcessor
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
  */
 @Component
+@Slf4j
 public class StreamProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StreamProcessor.class);
     private static final Serde<TradeEvent> TRADE_DATA_SERDE = Serdes.serdeFrom(new TradeEventSerde(), new TradeEventSerde());
     private static final Serde<AggregateTradeData> TRADE_AGGREGATE_SERDE = Serdes.serdeFrom(new AggregateTradeDataSerde(), new AggregateTradeDataSerde());
     private static final Serde<String> STRING_SERDE = Serdes.String();
     private static final String SIDE_BUY = "buy";
     private static final String SIDE_SELL = "sell";
-
     private static final String STATE_DIR = "/tmp/kafka-streams";
     private static final Aggregator<String, TradeEvent, AggregateTradeData> AGGREGATOR = ((key, tradeEvent, aggregate) -> {
         if (aggregate == null) {
@@ -83,7 +83,7 @@ public class StreamProcessor {
         config.put(StreamsConfig.STATE_DIR_CONFIG, STATE_DIR);
 
         KafkaStreams streams = new KafkaStreams(topology, config);
-        streams.setUncaughtExceptionHandler((thread, throwable) -> LOGGER.error(throwable.getMessage()));
+        streams.setUncaughtExceptionHandler((thread, throwable) -> log.error(throwable.getMessage()));
         streams.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));

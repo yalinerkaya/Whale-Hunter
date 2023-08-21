@@ -25,5 +25,7 @@ public class MessageApplication {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+
+
     }
 }

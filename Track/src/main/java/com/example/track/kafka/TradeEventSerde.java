@@ -14,13 +14,13 @@ import java.util.Map;
 /**
  * packageName    : com.example.track.kafka
  * fileName       : TradeEventSerde
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
  */
 @Slf4j
 public class TradeEventSerde implements Serializer<TradeEvent>, Deserializer<TradeEvent> {

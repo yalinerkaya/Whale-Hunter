@@ -1,84 +1,80 @@
 package com.example.track.application;
 
+import com.example.global.common.CommonKafkaProducer;
+import com.example.global.common.SignalType;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.track.dao.MoveAverageRepository;
-import com.example.track.domain.MoveAverage;
 import com.example.track.domain.kafka.TradeEvent;
+import com.example.track.kafka.TradeTestKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * packageName    : com.example.track.application
  * fileName       : TrackSignalServiceImpl
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-26
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-26        정재윤       최초 생성
+ * 2023-07-26        Jay       최초 생성
  */
 @Service
 @Slf4j
 public class TrackSignalServiceImpl implements TrackSignalService {
-
     private final MoveAverageRepository moveAverageRepository;
-    private final MessageFeignClient messageFeignClient;
-
-    private final String UP = "high";
-    private final String DOWN = "down";
+    private final TradeTestKafkaProducer kafkaProducer = new CommonKafkaProducer().createTradeEventKafkaProducer();
 
     @Autowired
-    public TrackSignalServiceImpl(MoveAverageRepository moveAverageRepository, MessageFeignClient messageFeignClient) {
+    public TrackSignalServiceImpl(
+            MoveAverageRepository moveAverageRepository) {
         this.moveAverageRepository = moveAverageRepository;
-        this.messageFeignClient = messageFeignClient;
+    }
+
+    @Override
+    @Cacheable("latestMoveAverage")
+    public BigDecimal getLatestMoveAverage() {
+        return moveAverageRepository.findTopByOrderByCreatedAtDesc().getMoveAverage();
     }
 
     @Override
     @CircuitBreaker(name = "messageService", fallbackMethod = "fallbackMessageService")
     public void processTradeEvent(TradeEvent tradeEvent) {
+        CompletableFuture<BigDecimal> latestPriceFuture = fetchLatestMoveAverageAsync();
+        latestPriceFuture.thenAcceptAsync(latestPrice -> {
+            sendSignalBasedOnPriceComparison(tradeEvent, latestPrice);
+        });
+    }
 
-        MoveAverage latestPrice = moveAverageRepository.findTopByOrderByCreatedAtDesc();
+    private CompletableFuture<BigDecimal> fetchLatestMoveAverageAsync() {
+        return CompletableFuture.supplyAsync(this::getLatestMoveAverage);
+    }
 
-        boolean hasLatestPriceAndTradeEvent = latestPrice != null && tradeEvent.getPrice() != null;
+    private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, BigDecimal latestPrice) {
+        BigDecimal tradePrice = new BigDecimal(tradeEvent.getPrice());
+        int comparisonResult = tradePrice.compareTo(latestPrice);
 
-        if (hasLatestPriceAndTradeEvent) {
-            double tradeEventPrice = new Double(tradeEvent.getPrice());
-            double latestPriceMoveAverage = latestPrice.getMoveAverage().doubleValue();
-            String lastBtcStatus = messageFeignClient.checkBTCStatus().getBody().getData().getStatus();
-
-            if (isPriceAboveMoveAverage(tradeEventPrice, latestPriceMoveAverage) && isStilDown(lastBtcStatus)) {
-                messageFeignClient.priceBreakout();
-            }
-
-            if (isPriceBelowMoveAverage(tradeEventPrice, latestPriceMoveAverage) && isStilUp(lastBtcStatus)) {
-                messageFeignClient.priceBreakdown();
-            }
+        if (comparisonResult > 0) {
+            sendSignal(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST);
+        } else if (comparisonResult < 0) {
+            sendSignal(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST);
         }
     }
 
-    private boolean isPriceAboveMoveAverage(double tradeEventPrice, double latestPriceMoveAverage) {
-        return tradeEventPrice > latestPriceMoveAverage;
+    private void sendSignal(String seqnum, SignalType signalType) {
+        kafkaProducer.send(seqnum, signalType.getValue());
     }
 
-    private boolean isPriceBelowMoveAverage(double tradeEventPrice, double latestPriceMoveAverage) {
-        return tradeEventPrice < latestPriceMoveAverage;
-    }
-
-    private boolean isStilDown(String lastBtcStatus) {
-        return DOWN.equals(lastBtcStatus);
-    }
-
-    private boolean isStilUp(String lastBtcStatus) {
-        return UP.equals(lastBtcStatus);
-    }
-
-    public void fallbackMessageService(TradeEvent tradeEvent, Throwable throwable) {
-        log.error("Fallback occurred for processTradeEvent = ", throwable);
+    public void fallbackMessageService(Throwable throwable) {
+        log.error("Fallback occurred for test", throwable);
         throw new WhaleException(WhaleExceptionType.INTERNAL_SERVER_ERROR);
     }
 }

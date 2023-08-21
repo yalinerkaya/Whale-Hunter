@@ -18,21 +18,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CoinStatusResponse {
     private String status;
-    public CoinStatusResponse() {
-    }
-
-    public CoinStatusResponse(String status) {
-        this.status = status;
-    }
-
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

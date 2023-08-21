@@ -5,8 +5,6 @@ import com.example.track.domain.kafka.TradeEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;
@@ -18,17 +16,16 @@ import static com.example.global.util.DateUtils.convertTimestampToTimeString;
 /**
  * packageName    : com.example.track.kafka
  * fileName       : BinanceApiWebSocketListener
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
  */
 @Slf4j
 public class BinanceApiWebSocketListener implements WebSocket.Listener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BinanceApiWebSocketListener.class);
     private final CountDownLatch latch;
     private final TradeEventKafkaProducer kafkaProducer;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -48,7 +45,6 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
         builder.append(data);
         webSocket.request(1);
 
-        // 마지막 메시지가 아니면 completable을 반환
         if (!last) {
             return completable;
         }
@@ -56,17 +52,31 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
         try {
             String messageJson = builder.toString();
             TradeEvent tradeEvent = mapper.readValue(messageJson, TradeEvent.class);
-            LOGGER.info("새로운 거래가 발생:\n" + messageJson);
+            log.info("새로운 거래가 발생:\n" + messageJson);
 
-            // 매수 시그널 체크
-            trackSignalServiceImpl.processTradeEvent(tradeEvent);
+            if (tradeEvent.getPrice() != null) {
+                CompletableFuture<Void> processFuture = CompletableFuture.runAsync(() -> {
+                    trackSignalServiceImpl.processTradeEvent(tradeEvent);
+                });
+            }
 
             if (tradeEvent.getEvent().equals("updated")) {
-                LOGGER.info("카프카 프로듀서로 아이템 하나를 전송합니다.");
+                CompletableFuture.runAsync(() -> kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent))
+                        .whenComplete((result, ex) -> {
+                            if (ex != null) {
+                                log.error("전송 중 에러 발생: " + ex.getMessage());
+                            }
+                        });
+            } else {
+                log.info("새로운 이벤트 발생: " + messageJson);
+            }
+
+/*            if (tradeEvent.getEvent().equals("updated")) {
+                log.info("카프카 프로듀서로 아이템 하나를 전송합니다.");
                 kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent);
             } else {
-                LOGGER.info("새로운 이벤트 발생: " + messageJson);
-            }
+                log.info("새로운 이벤트 발생: " + messageJson);
+            }*/
 
             completable.complete(null);
             CompletionStage<?> completionStage = completable;
@@ -81,19 +91,19 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
 
     @Override
     public void onOpen(WebSocket webSocket) {
-        LOGGER.info("🥕🥕🥕🥕웹소켓 연결 성공🥕🥕🥕🥕");
+        log.info("🥕🥕🥕🥕웹소켓 연결 성공🥕🥕🥕🥕");
         webSocket.request(1);
     }
 
     @Override
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
-        LOGGER.info("웹소켓이 종료되었습니다. 사유 : : " + reason + " | 상태 코드: " + statusCode);
+        log.info("웹소켓이 종료되었습니다. 사유 : : " + reason + " | 상태 코드: " + statusCode);
         return null;
     }
 
     @Override
     public void onError(WebSocket webSocket, Throwable error) {
-        LOGGER.error("웹소켓 연결 실패🥕🥕🥕🥕 사유 : ", error);
+        log.error("웹소켓 연결 실패🥕🥕🥕🥕 사유 : ", error);
         latch.countDown();
     }
 }

@@ -15,7 +15,6 @@ import com.example.track.domain.MoveAverage;
 import com.example.track.dto.ClosePriceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -33,13 +32,13 @@ import static com.example.global.util.TrackConstants.*;
 /**
  * packageName    : com.example.track.application
  * fileName       : TrackServiceImpl
- * author         : 정재윤
+ * author         : Jay
  * date           : 2023-07-24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
  */
 
 @Service
@@ -62,7 +61,7 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<ClosePriceResponse> selectBinanceClosePriceList() throws Exception {
         long endTime = DateUtils.getTodayStartTimeInMillis();
-        long startTime = DateUtils.getStartTimeBeforeDays(50);
+        long startTime = DateUtils.getStartTimeBeforeDays(FIFTY);
 
         List<ClosePriceResponse> closePriceResponses = new ArrayList<>();
         List<Candlestick> candlesticks = client.getCandlestickBars(BTC_USDT, DAILY, FIVE_HUNDRED_LIMIT, startTime, endTime);
