@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.Copy
+
 plugins {
     id 'java'
     id 'war'
@@ -8,6 +10,14 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+
+task copySecret(type: Copy) {
+    from file("${rootProject.projectDir.parent}/Whale-Hunter-Submodule/Eureka")
+    include "application*.yml"
+    into 'src/main/resources'
+}
+
+processResources.dependsOn('copySecret')
 
 configurations {
     compileOnly {
