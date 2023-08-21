@@ -27,22 +27,23 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.1.0'
     implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.1'
-    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'io.micrometer:micrometer-core:1.10.6'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.10.6'
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.1.0'
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-    implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.24'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.24'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.7'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 targetCompatibility = JavaVersion.VERSION_11
