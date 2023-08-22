@@ -28,13 +28,11 @@ public class KafkaMessageConsumer {
 
     @KafkaListener(topics = "trade_test", groupId = "data-api")
     public void consumeTradeEvent(String current) throws Exception {
-        String lastBtcStatus = messageService.selectBTCStatus().getStatus();
-
-        if(current.equals(UP) && lastBtcStatus.equals(DOWN)){
+        if(current.equals(UP)){
             messageService.priceBreakout();
         }
 
-        if(current.equals(DOWN) && lastBtcStatus.equals(UP)){
+        if(current.equals(DOWN)){
             messageService.priceBreakdown();
         }
     }

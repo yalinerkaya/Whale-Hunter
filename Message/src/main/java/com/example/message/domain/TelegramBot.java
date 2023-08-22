@@ -2,6 +2,7 @@ package com.example.message.domain;
 
 import com.example.global.config.TelegramConfig;
 import com.example.message.MessageApplication;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,6 +5,7 @@ import com.example.global.common.SignalType;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.track.dao.MoveAverageRepository;
+import com.example.track.dto.MoveAverageResponse;
 import com.example.track.kafka.TradeEvent;
 import com.example.track.kafka.TradeTestKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -36,36 +37,36 @@ public class TrackSignalServiceImpl implements TrackSignalService {
 
     @Override
     @Cacheable("latestMoveAverage")
-    public BigDecimal getLatestMoveAverage() {
-        return moveAverageRepository.findTopByOrderByCreatedAtDesc().getMoveAverage();
+    public MoveAverageResponse getLatestMoveAverage() {
+        return moveAverageRepository.findTopByOrderByCreatedAtDesc();
     }
 
     @Override
     @CircuitBreaker(name = "messageService", fallbackMethod = "fallbackMessageService")
     public void processTradeEvent(TradeEvent tradeEvent) {
-        CompletableFuture<BigDecimal> latestPriceFuture = fetchLatestMoveAverageAsync();
-        latestPriceFuture.thenAcceptAsync(latestPrice -> {
+        CompletableFuture<MoveAverageResponse> latestMoveAverageFuture = fetchLatestMoveAverageAsync();
+        latestMoveAverageFuture.thenAcceptAsync(latestPrice -> {
             sendSignalBasedOnPriceComparison(tradeEvent, latestPrice);
         });
     }
 
-    private CompletableFuture<BigDecimal> fetchLatestMoveAverageAsync() {
+    private CompletableFuture<MoveAverageResponse> fetchLatestMoveAverageAsync() {
         return CompletableFuture.supplyAsync(this::getLatestMoveAverage);
     }
 
-    private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, BigDecimal latestPrice) {
+    private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, MoveAverageResponse moveAverageResponse) {
         BigDecimal tradePrice = new BigDecimal(tradeEvent.getPrice());
-        int comparisonResult = tradePrice.compareTo(latestPrice);
+        int comparisonResult = tradePrice.compareTo(moveAverageResponse.getMoveAverage());
 
-        if (comparisonResult > 0) {
-            sendSignal(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST);
-        } else if (comparisonResult < 0) {
-            sendSignal(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST);
+        // Breakout
+        if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST)) {
+            kafkaProducer.send(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST.getValue());
         }
-    }
 
-    private void sendSignal(String seqnum, SignalType signalType) {
-        kafkaProducer.send(seqnum, signalType.getValue());
+        // Breakdown
+        if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST)) {
+            kafkaProducer.send(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST.getValue());
+        }
     }
 
     public void fallbackMessageService(Throwable throwable) {

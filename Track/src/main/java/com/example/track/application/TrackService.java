@@ -34,6 +34,11 @@ public interface TrackService {
     void insertMoveAverage(List<ClosePrice> closePrices) throws Exception;
 
     /**
+     * 현재 종가와 이동 평균선을 비교
+     **/
+    void insertBTCStatus() throws Exception;
+
+    /**
      * 새로운 종가
      **/
     ClosePriceResponse selectBinanceClosePrice() throws Exception;

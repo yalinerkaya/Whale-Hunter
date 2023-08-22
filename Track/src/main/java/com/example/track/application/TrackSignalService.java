@@ -1,8 +1,7 @@
 package com.example.track.application;
 
+import com.example.track.dto.MoveAverageResponse;
 import com.example.track.kafka.TradeEvent;
-
-import java.math.BigDecimal;
 
 /**
  * packageName    : com.example.track.application
@@ -19,5 +18,5 @@ public interface TrackSignalService {
 
     void processTradeEvent(TradeEvent tradeEvent) throws Exception;
 
-    BigDecimal getLatestMoveAverage() throws Exception;
+    MoveAverageResponse getLatestMoveAverage() throws Exception;
 }

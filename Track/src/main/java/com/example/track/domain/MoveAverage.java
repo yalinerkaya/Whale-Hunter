@@ -1,5 +1,6 @@
 package com.example.track.domain;
 
+import com.example.global.common.SignalType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,9 @@ public class MoveAverage {
     @Column(name = "symbol")
     private String symbol;
 
+    @Column(name = "last_status")
+    private SignalType lastStatus;
+
     @Column(name = "move_average")
     private BigDecimal moveAverage;
 
@@ -52,6 +56,10 @@ public class MoveAverage {
         this.symbol = symbol;
         this.moveAverage = moveAverage;
         this.closedAt = closedAt;
+    }
+
+    public void changeStatus(SignalType lastStatus) {
+        this.lastStatus = lastStatus;
     }
 
 }

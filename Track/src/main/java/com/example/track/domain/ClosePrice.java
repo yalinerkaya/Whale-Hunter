@@ -1,5 +1,6 @@
 package com.example.track.domain;
 
+import com.example.global.common.SignalType;
 import com.example.track.dto.ClosePriceResponse;
 import lombok.AccessLevel;
 import lombok.Getter;

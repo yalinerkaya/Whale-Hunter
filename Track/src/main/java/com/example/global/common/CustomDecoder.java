@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
 
 import java.io.IOException;

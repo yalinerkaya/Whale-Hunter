@@ -42,6 +42,9 @@ public class ScheduleService {
     public void trackMoveAverageAdd() throws Exception {
         List<ClosePrice> closePrices = trackService.selectClosePriceList();
         trackService.insertMoveAverage(closePrices);
+        trackService.insertBTCStatus();
+        // 캐싱
+        trackSignalService.getLatestMoveAverage();
     }
 
     @Scheduled(cron = MIDNIGHT)
@@ -50,6 +53,5 @@ public class ScheduleService {
     public void trackClosePriceAdd() throws Exception {
         ClosePriceResponse closePriceResponses = trackService.selectBinanceClosePrice();
         trackService.insertClosePrice(closePriceResponses);
-        trackSignalService.getLatestMoveAverage();
     }
 }

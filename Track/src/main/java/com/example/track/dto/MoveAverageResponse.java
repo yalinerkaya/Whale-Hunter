@@ -1,5 +1,6 @@
 package com.example.track.dto;
 
+import com.example.global.common.SignalType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class MoveAverageResponse {
     private BigDecimal moveAverage;
+    private SignalType lastStatus;
 }

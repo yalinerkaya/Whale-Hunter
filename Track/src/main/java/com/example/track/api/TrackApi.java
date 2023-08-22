@@ -53,6 +53,17 @@ public class TrackApi {
     }
 
     /**
+     * BTC 현재 종가와 이동평균선 비교
+     *
+     * @throws Exception
+     */
+    @GetMapping("/status")
+    public CommonResponse<Void> trackCompareStatus() throws Exception {
+        trackService.insertBTCStatus();
+        return new CommonResponse<>();
+    }
+
+    /**
      * 새로운 종가 저장
      *
      * @throws Exception

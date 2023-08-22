@@ -3,6 +3,7 @@ package com.example.track.application;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.market.Candlestick;
+import com.example.global.common.SignalType;
 import com.example.global.config.BinanceConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
@@ -13,6 +14,7 @@ import com.example.track.domain.Binance;
 import com.example.track.domain.ClosePrice;
 import com.example.track.domain.MoveAverage;
 import com.example.track.dto.ClosePriceResponse;
+import com.example.track.dto.MoveAverageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,6 +107,24 @@ public class TrackServiceImpl implements TrackService {
         movingAverageValue = movingAverageValue.divide(BigDecimal.valueOf(FIFTY), TWO_DECIMAL_PLACES, RoundingMode.HALF_UP);
         ClosePrice recentClosePrice = closePrices.get(ZERO);
         MoveAverage moveAverage = new MoveAverage(recentClosePrice.getClosePriceUid(), BTC_USDT, movingAverageValue, recentClosePrice.getClosedAt());
+        moveAverageRepository.save(moveAverage);
+    }
+
+    @Override
+    public void insertBTCStatus() throws Exception {
+        ClosePrice closePrice = closePriceRepository.findOneByOrderByClosedAtDesc();
+        MoveAverage moveAverage = moveAverageRepository.findOneByOrderByCreatedAtDesc();
+
+        int comparisonResult = closePrice.getClosingPrice().compareTo(moveAverage.getMoveAverage());
+
+        if (comparisonResult > 0) {
+            moveAverage.changeStatus(SignalType.CURRENT_HIGHER_THAN_LAST);
+        }
+
+        if (comparisonResult < 0) {
+            moveAverage.changeStatus(SignalType.CURRENT_LOWER_THAN_LAST);
+        }
+
         moveAverageRepository.save(moveAverage);
     }
 
