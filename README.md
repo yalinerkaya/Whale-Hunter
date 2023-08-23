@@ -50,20 +50,15 @@
     <td>  
         <img src="https://i0.wp.com/codegym.vn/wp-content/uploads/2020/06/spring-jpa-query-5.png?fit=400%2C400&ssl=1" width="100px" />
     </td>
-    <td>
         <img src="https://automated-testing.info/uploads/default/original/2X/7/760cbf21278280fd7d4980c577d64da634c9fc42.png" width="100px" />
     </td>
-        <td>
-        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/23894fbd-3cb4-4986-88f1-187187fc71e0" width="100px" />
-    </td>
-        <td>
+    <td>
         <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/d50beb9c-61ff-4f38-ba1c-346a8cef3625" width="100px" />
     </td>
   </tr>
   <tr>
     <td><b>Srping Data JPA</b></td>
     <td><b>JUnit5 / Mockito</b></td>
-    <td><b>Redis</b></td>
     <td><b>Kafka</b></td>
   </tr>
 </table>
@@ -108,7 +103,7 @@
 
 ### Architecture
 예상 설계
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/bec9b5b1-bc92-40d2-95a7-16be4bdd0398)
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/bec9b5b1-bc92-40d2-95a7-16be4bdd0398)  
 클라이언트는 텔레그렘이 제공해서 화면은 ngrok로만 외부 연결
 <hr>
 
@@ -176,15 +171,11 @@ Spring Rest Docs를 적용, API 호출시 발생 가능한 Error Spec 따로 기
 <hr>
 
 ### 기술적 이슈
-- 분산 환경에서의 트랜잭션 관리
-- Netflix Hystric를 이용하여 MSA 장애 발생 재현
-- 서비스 호출(TCP 세션) 성능 향상을 위한 gRPC 도입
-- MSA 환경에서 로깅과 모니터링 문제
-- 커넥션풀 계산과 서버 성능 테스트를 위한 JMeter
-- 동시 접속자가 많은 서비스에서 조회 기능 TPS 개선
-- 멀티 스레드 환경에서 동시설 발생시 데이터 일관성 문제
-- A -> B 서버 요청시 B서버 장애로 처리되지 못한 A 요청 문제
-- 갑작스러운 AWS 장애 발생시 서버 복구 시나리오
+- 전체 장애 방지를 위한 서킷브레이커
+- 분산 시스템 로그 관리
+- 실시간 모니터링 및 장애 감지
+- 서버 성능 테스트를 통한 TPS 향상 
+- 분산 시스템 트랜잭션과 실패시 재처리
 <hr>
 
 ### 원하는 조건
