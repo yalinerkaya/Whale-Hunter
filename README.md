@@ -13,11 +13,9 @@
 <hr>
 
 ### 주요 목표
-서비스도중 장애를 겪었던 이유를 떠올려보며 문제 해결 능력을 다각화하여 시뮬레이션하는것
+- 서비스도중 장애를 겪었던 이유를 떠올려보며 문제 해결 능력을 다각화하여 시뮬레이션
 - Microservices 아키텍처 기반의 시스템 개발
 - 백엔드 환경에서 발생할 수 있는 성능 저하 요소 분석 및 코드 개선을 통한 성능 개선
-- 단위 테스트 진행 및 CI/CD 자동화
-- 대용량 트래픽을 처리하기 위해 NoSQL (Memcached, Redis) 전략 구상과 API 설계
 <hr>
 
 
@@ -50,6 +48,7 @@
     <td>  
         <img src="https://i0.wp.com/codegym.vn/wp-content/uploads/2020/06/spring-jpa-query-5.png?fit=400%2C400&ssl=1" width="100px" />
     </td>
+    <td>
         <img src="https://automated-testing.info/uploads/default/original/2X/7/760cbf21278280fd7d4980c577d64da634c9fc42.png" width="100px" />
     </td>
     <td>
@@ -103,13 +102,18 @@
 
 ### Architecture
 예상 설계
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/bec9b5b1-bc92-40d2-95a7-16be4bdd0398)  
-클라이언트는 텔레그렘이 제공해서 화면은 ngrok로만 외부 연결
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5bfd8d1e-dc49-4ab7-9dbc-dbbbff98cfb9)
 <hr>
 
 ### Main Logic
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/6e7f3e1e-f060-4afe-a1e8-84750c1510b1)
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/56787d80-3906-47a5-9fa9-cc03677b5b30)  
+<hr>
+(게이트웨이 제거)  
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/422a8ea5-76cc-4cc3-a0ed-f2dddfd2e986)  
 
+### Real Time Chart
+![clideo_editor_01ebdc15970a4dcda742d52ced34ecf4](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/90a2aa0b-7ebe-4796-8b6d-8665c43bbcb7)  
+클라이언트는 텔레그렘이 제공해서 화면은 ngrok로만 외부 연결
 <hr>
 
 ### STRESS TEST 
