@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = "11"
+}
+
+task copySecret(type: Copy) {
+    from file("${rootProject.projectDir.parent}/Whale-Hunter-Submodule/Message")
+    include "application*.yml"
+    into 'src/main/resources'
+}
+
+processResources.dependsOn('copySecret')
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.telegram:telegrambots:6.1.0'
+    implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.1'
+    implementation 'io.micrometer:micrometer-core:1.10.6'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.6'
+    implementation 'mysql:mysql-connector-java:8.0.32'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin:3.1.0'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.7'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.0'
+    implementation 'org.springframework.kafka:spring-kafka'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+targetCompatibility = JavaVersion.VERSION_11

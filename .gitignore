@@ -1,1 +1,16 @@
+Message/.gradle/
 
+*.yml
+
+Track/.gradle/
+
+.idea/
+
+data/
+
+Display/.gradle/
+
+Gateway/.gradle/
+
+Track/build/
+Track/out/
