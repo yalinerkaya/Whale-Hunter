@@ -107,10 +107,12 @@
 <hr>
 
 ### Architecture
-![Architecture](https://user-images.githubusercontent.com/72185011/222195610-18231737-8503-4930-b1b7-c3ba0b04d40f.png)
+예상 설계
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/bec9b5b1-bc92-40d2-95a7-16be4bdd0398)
+클라이언트는 텔레그렘이 제공해서 화면은 ngrok로만 외부 연결
 <hr>
 
-### ERD
+### Main Logic
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/6e7f3e1e-f060-4afe-a1e8-84750c1510b1)
 
 <hr>
@@ -118,10 +120,9 @@
 ### STRESS TEST 
 *결과요약*
 
-|  | 예약 0% | 예약 25% | 예약 50% | 예약 75% | 예약 100% |
-| --- | --- | --- | --- | --- | --- |
-| 동적예약계산 | 500 / 60 / 150 | 500 / 60 / 120 | 500 / 60 / 90 | 500 / 60 / 80 | 500 / 60 / 60 |
-| TPS | 1092 | 780 | 586 | 484 | 400 |
+|  | 1차 50건 | 2차 50건 | --- 3차 3000건 | 
+| --- | --- | --- | --- |
+| TPS | 2/sec | 61/sec | 1000/sec |
 
 <br>
 
