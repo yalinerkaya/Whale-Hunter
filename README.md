@@ -101,13 +101,14 @@
 <hr>
 
 ### Architecture
-예상 설계
+예상 설계  
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5bfd8d1e-dc49-4ab7-9dbc-dbbbff98cfb9)
 <hr>
 
 ### Main Logic
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/56787d80-3906-47a5-9fa9-cc03677b5b30)  
 <hr>
+
 (게이트웨이 제거)  
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/422a8ea5-76cc-4cc3-a0ed-f2dddfd2e986)  
 
