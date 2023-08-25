@@ -32,21 +32,11 @@
     <td>
         <img src="https://mblogthumb-phinf.pstatic.net/MjAxNzA4MDNfOTMg/MDAxNTAxNzYzODU4Mzc3.VFDhGiVlIJ_1-1n7eakK3HsfRDMbGyEAPVOdB6bYah4g.jFz8_8GL41JgQUiDryDYYoFl-FaqG48EKtcz-EdHANwg.PNG.scw0531/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-08-03_%EC%98%A4%ED%9B%84_9.18.37.png?type=w2" width="100px" />
     </td>
-    <td>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNVKGVT_dyDB_b758ACxJlJTKZFc6NaJvCI6Tt6V8RE5V6UnTP9ux_Pahj4DxhH7hiHeE&usqp=CAU" width="100px" />
-    </td>
-  </tr>
-  <tr>
-    <td><b>Java 1.8</b></td>
-    <td><b>Gradle</b></td>
-    <td><b>Spring Boot</b></td>
-    <td><b>MySQL</b></td>
-  </tr>
-</table>
-<table>
-  <tr>
     <td>  
         <img src="https://i0.wp.com/codegym.vn/wp-content/uploads/2020/06/spring-jpa-query-5.png?fit=400%2C400&ssl=1" width="100px" />
+    </td>
+    <td>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNVKGVT_dyDB_b758ACxJlJTKZFc6NaJvCI6Tt6V8RE5V6UnTP9ux_Pahj4DxhH7hiHeE&usqp=CAU" width="100px" />
     </td>
     <td>
         <img src="https://automated-testing.info/uploads/default/original/2X/7/760cbf21278280fd7d4980c577d64da634c9fc42.png" width="100px" />
@@ -56,9 +46,13 @@
     </td>
   </tr>
   <tr>
+    <td><b>Java 11</b></td>
+    <td><b>Gradle 8.0</b></td>
+    <td><b>Spring Boot 2.7</b></td>
     <td><b>Srping Data JPA</b></td>
+    <td><b>MySQL 8.x</b></td>
     <td><b>JUnit5 / Mockito</b></td>
-    <td><b>Kafka</b></td>
+    <td><b>Kafka 3.x</b></td>
   </tr>
 </table>
 
@@ -72,15 +66,31 @@
   <tr>
     <td><b>JMeter</b></td>
   </tr>
-  
 </table>
 
-### 문서/협업
+### 모니터링
 <table>
   <tr>
     <td>
-        <img src="https://user-images.githubusercontent.com/103566826/177922764-354c44a9-05e9-4d5c-a10c-0da6676a80a0.png" width="100px" />
+        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5ee84dd8-7eb9-4905-b1c5-137cf75076c0" width="100px" />
     </td>
+    <td>
+        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/765dd265-940a-47ce-9067-57957479dfb6" width="100px" />
+    </td>
+    <td>
+        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/6e256b78-d6f6-4cf0-9067-28f5103e7585" width="100px" />
+    </td>
+  </tr>
+  <tr>
+    <td><b>Zipkin</b></td>
+    <td><b>Prometheus</b></td>
+    <td><b>Grafana</b></td>
+  </tr>
+</table>
+
+### 문서
+<table>
+  <tr>
     <td>
         <img src="https://user-images.githubusercontent.com/103566826/177922794-5a47df94-fc97-4beb-a6f4-16b24e315757.png" width="100px" />
     </td>
@@ -92,29 +102,19 @@
     </td>
   </tr>
   <tr>
-    <td><b>Notion</b></td>
-    <td><b>GitHub</b></td>
+    <td><b>GitHub Wiki</b></td>
     <td><b>RestDocs</b></td>
     <td><b>AsciiDocs</b></td>
   </tr>
 </table>
 <hr>
 
-### Architecture
-예상 설계  
+### Architecture  
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5bfd8d1e-dc49-4ab7-9dbc-dbbbff98cfb9)
 <hr>
 
-### Main Logic
+### Sequence Diagram
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/56787d80-3906-47a5-9fa9-cc03677b5b30)  
-<hr>
-
-(게이트웨이 제거)  
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/422a8ea5-76cc-4cc3-a0ed-f2dddfd2e986)  
-
-### Real Time Chart
-![clideo_editor_01ebdc15970a4dcda742d52ced34ecf4](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/90a2aa0b-7ebe-4796-8b6d-8665c43bbcb7)  
-클라이언트는 텔레그렘이 제공해서 화면은 ngrok로만 외부 연결
 <hr>
 
 ### STRESS TEST 
@@ -123,11 +123,9 @@
 |  | 1차 50건 | 2차 50건 | --- 3차 3000건 | 
 | --- | --- | --- | --- |
 | TPS | 2/sec | 61/sec | 1000/sec |
-
 <br>
 
 ## 컨벤션 (Branch, 커밋 메시지, API)
-
 ### Branch
 - `develop` , `main` , `feature/*`
 ```
@@ -181,6 +179,16 @@ Spring Rest Docs를 적용, API 호출시 발생 가능한 Error Spec 따로 기
 - 실시간 모니터링 및 장애 감지
 - 서버 성능 테스트를 통한 TPS 향상 
 - 분산 시스템 트랜잭션과 실패시 재처리
+<hr>
+
+### Feature Update List
+**Real Time Chart**  
+카프카 스트림즈를 통해 데이터베이스 없이 실시간 통신, Client 추가 기획될시 반영 예정
+![clideo_editor_01ebdc15970a4dcda742d52ced34ecf4](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/90a2aa0b-7ebe-4796-8b6d-8665c43bbcb7)  
+<hr>
+
+**Gateway/Eureka**  
+Client 추가 기획될시 반영 예정
 <hr>
 
 ### 원하는 조건
