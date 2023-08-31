@@ -25,10 +25,4 @@ public class MessageApi {
         messageService.priceBreakdown();
         return new CommonResponse<>();
     }
-
-    @GetMapping("/status")
-    public CommonResponse<CoinStatusResponse> checkBTCStatus() throws Exception {
-        CoinStatusResponse coinStatusResponse = messageService.selectBTCStatus();
-        return new CommonResponse<>(coinStatusResponse);
-    }
 }
