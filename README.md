@@ -95,16 +95,12 @@
         <img src="https://user-images.githubusercontent.com/103566826/177922794-5a47df94-fc97-4beb-a6f4-16b24e315757.png" width="100px" />
     </td>
     <td>
-        <img src="https://user-images.githubusercontent.com/103566826/177922809-866718e0-fb19-4840-9caa-111da31795d1.png" width="100px" />
-    </td>
-    <td>
         <img src="https://user-images.githubusercontent.com/103566826/177922816-6888632c-b218-4635-98d5-189addb835ca.png" width="100px" />
     </td>
   </tr>
   <tr>
     <td><b>GitHub Wiki</b></td>
-    <td><b>RestDocs</b></td>
-    <td><b>AsciiDocs</b></td>
+    <td><b>Notion</b></td>
   </tr>
 </table>
 <hr>
@@ -115,6 +111,10 @@
 
 ### Sequence Diagram
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/56787d80-3906-47a5-9fa9-cc03677b5b30)  
+<hr>
+
+### Message Example
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/c10da3b7-9701-4ad1-900f-183ea4474a7b)
 <hr>
 
 ### STRESS TEST 
@@ -160,14 +160,13 @@
 ```
 <hr>
 
-## API Document
-Spring Rest Docs를 적용, API 호출시 발생 가능한 Error Spec 따로 기술  
+## [API Document](https://jayfreemandev.notion.site/API-f20ef3d1cee34c1bb42a6966a87a1d7e?pvs=4)
+API 호출시 코드 0을 제외한 나머지는 에러로 정의
 
 ### Error Spec
-| 오류 코드 | 오류 메시지                        | 해결 방법                   |
+| 오류 코드 | 오류 메시지                        | 해결 방법                 |
 | ---- | ------------------------------- | ------------------------------- |
-| 20001  | 비정상적인 카프카 요청입니다.   | 정상적인 카프카 요청이 필요합니다.                        |
-| 30001  | 비정상적인 레디스 요청입니다.   | 정상적인 레디스 요청이 필요합니다.           |
+| 03000  | 텔레그램 전송에 실패했습니다.   | API KEY 확인 및 재전송 요청이 필요합니다. |
 
 [쿠팡 API Docs Error Spec 참조](https://developers.coupangcorp.com/hc/ko/articles/360033877853-%EC%83%81%ED%92%88-%EC%83%9D%EC%84%B1)
 
