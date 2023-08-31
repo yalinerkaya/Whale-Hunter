@@ -32,7 +32,7 @@ public class CommonKafkaProducer {
     public TradeTestKafkaProducer createTradeEventKafkaProducer() {
         Map<String, Object> kafkaConfigSetting = new HashMap<>();
         kafkaConfigSetting.put(ProducerConfig.ACKS_CONFIG, "all");
-        kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9091,localhost:9092,localhost:9093");
+        kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9091,kafka2:9092,kafka3:9093");
         kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, "extractor");
         KafkaProducer<String, String> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TestEventSerde());
         TradeTestKafkaProducer kafkaProducer = new TradeTestKafkaProducer(kafkaProducerService);

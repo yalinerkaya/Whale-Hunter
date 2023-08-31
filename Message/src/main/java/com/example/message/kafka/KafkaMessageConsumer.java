@@ -28,12 +28,17 @@ public class KafkaMessageConsumer {
 
     @KafkaListener(topics = "trade_test", groupId = "data-api")
     public void consumeTradeEvent(String current) throws Exception {
-        if(current.equals(UP)){
-            messageService.priceBreakout();
-        }
 
-        if(current.equals(DOWN)){
-            messageService.priceBreakdown();
+        try{
+            if(current.equals(UP)){
+                messageService.priceBreakout();
+            }
+
+            if(current.equals(DOWN)){
+                messageService.priceBreakdown();
+            }
+        }catch (Exception exception){
+            // 실패 event produce (보상 트랜잭션)
         }
     }
 }

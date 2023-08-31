@@ -3,10 +3,7 @@ package com.example.message.application;
 import com.example.global.config.TelegramConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
-import com.example.message.dao.CoinRepository;
-import com.example.message.domain.Coin;
 import com.example.message.domain.Telegram;
-import com.example.message.dto.CoinStatusResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import static com.example.global.util.MessageConstants.*;
 
@@ -28,7 +24,6 @@ public class MessageServiceImpl implements MessageService {
 
     @PersistenceContext
     private final EntityManager entityManager;
-    private final CoinRepository coinRepository;
     private final TelegramConfig telegramConfig;
 
     @Override
@@ -63,11 +58,5 @@ public class MessageServiceImpl implements MessageService {
             .setParameter(SYMBOL, symbol)
             .setParameter(STATUS, status)
             .executeUpdate();
-    }
-
-    @Override
-    public CoinStatusResponse selectBTCStatus() throws Exception {
-        String btcStatus = coinRepository.findStatusBySymbol(SYMBOL_BTC_USDT);
-        return new CoinStatusResponse(btcStatus);
     }
 }
