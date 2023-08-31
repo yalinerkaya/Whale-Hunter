@@ -20,9 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +28,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
+
+/**
+ * packageName    : com.example.track.service
+ * fileName       : TrackServiceTest
+ * author         : Jay
+ * date           : 2023-08-30
+ * description    : BTC 종가를 조회, 이동평균값 계산, 상태 저장 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023-08-30        Jay       최초 생성
+ */
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("트랙 서비스 테스트")
