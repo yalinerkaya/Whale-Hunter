@@ -1,4 +1,4 @@
-package com.example.track.service;
+package com.example.track;
 
 import com.example.global.exception.WhaleException;
 import com.example.track.application.TrackService;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
  */
 @DisplayName("이동평균 테스트")
 @ExtendWith(MockitoExtension.class)
-class TrackSignalTest {
+class TrackSignalServiceTest {
 
     @Mock
     private MoveAverageRepository moveAverageRepository;

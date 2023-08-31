@@ -1,4 +1,4 @@
-package com.example.track.service;
+package com.example.track;
 
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.market.Candlestick;

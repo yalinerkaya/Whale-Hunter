@@ -1,4 +1,4 @@
-package com.example.track.service;
+package com.example.track;
 
 import com.example.track.application.TrackService;
 import com.example.track.application.TrackServiceImpl;
