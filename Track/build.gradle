@@ -43,6 +43,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.32'
     implementation 'net.openhft.com.binance.api:binance-api-client:2.17.1'
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'org.apache.kafka:kafka-streams:3.1.2'
     implementation 'org.glassfish.tyrus:tyrus-client:1.15'
     implementation 'org.java-websocket:Java-WebSocket:1.5.4'
