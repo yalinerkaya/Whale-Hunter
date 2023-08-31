@@ -6,6 +6,7 @@ import com.example.track.domain.ClosePrice;
 import com.example.track.dto.ClosePriceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,7 +69,7 @@ public class TrackApi {
      *
      * @throws Exception
      */
-    @GetMapping("/new-close")
+    @PostMapping("/new-close")
     public CommonResponse<Void> trackClosePriceAdd() throws Exception {
         ClosePriceResponse closePriceResponses = trackService.selectBinanceClosePrice();
         trackService.insertClosePrice(closePriceResponses);
