@@ -95,7 +95,7 @@
         <img src="https://user-images.githubusercontent.com/103566826/177922794-5a47df94-fc97-4beb-a6f4-16b24e315757.png" width="100px" />
     </td>
     <td>
-        <img src="https://user-images.githubusercontent.com/103566826/177922816-6888632c-b218-4635-98d5-189addb835ca.png" width="100px" />
+        <img src="https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/4d59ee1b-dd39-4725-b694-ddfcdaa3236d" width="100px" />
     </td>
   </tr>
   <tr>
