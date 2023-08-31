@@ -6,7 +6,6 @@ import com.example.global.exception.WhaleException;
 import com.example.track.application.TrackSignalService;
 import com.example.track.application.TrackSignalServiceImpl;
 import com.example.track.kafka.Extractor;
-import com.example.track.kafka.StreamProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;

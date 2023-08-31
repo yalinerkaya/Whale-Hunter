@@ -34,7 +34,7 @@ public class TrackApi {
      *
      * @throws Exception
      */
-    @GetMapping("/close")
+    @PostMapping("/close")
     public CommonResponse<Void> trackClosePriceListAdd() throws Exception {
         List<ClosePriceResponse> closePriceResponses = trackService.selectBinanceClosePriceList();
         trackService.insertClosePriceList(closePriceResponses);
@@ -46,7 +46,7 @@ public class TrackApi {
      *
      * @throws Exception
      */
-    @GetMapping("/average")
+    @PostMapping("/average")
     public CommonResponse<Void> trackMoveAverageAdd() throws Exception {
         List<ClosePrice> closePrices = trackService.selectClosePriceList();
         trackService.insertMoveAverage(closePrices);
@@ -54,11 +54,11 @@ public class TrackApi {
     }
 
     /**
-     * BTC 현재 종가와 이동평균선 비교
+     * BTC 현재 종가와 이동평균선 비교후 상태 저장
      *
      * @throws Exception
      */
-    @GetMapping("/status")
+    @PostMapping("/status")
     public CommonResponse<Void> trackCompareStatus() throws Exception {
         trackService.insertBTCStatus();
         return new CommonResponse<>();
