@@ -1,9 +1,8 @@
-package com.example.track;
+package com.example.track.service;
 
 import com.example.global.exception.WhaleException;
 import com.example.track.application.TrackService;
 import com.example.track.application.TrackServiceImpl;
-import com.example.track.dao.ClosePriceRepository;
 import com.example.track.dao.MoveAverageRepository;
 import com.example.track.domain.ClosePrice;
 import com.example.track.domain.MoveAverage;
@@ -27,18 +26,19 @@ import static org.mockito.Mockito.verify;
 
 /**
  * packageName    : com.example.track
- * fileName       : TrackMoveAverageTest
- * author         : 정재윤
+ * fileName       : TrackSignalTest
+ * author         : Jay
  * date           : 2023-07-24
  * description    : 종가를 조회, 이동평균 계산중 발생 가능한 경우의 수 테스트
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-07-24        정재윤       최초 생성
+ * 2023-07-24        Jay       최초 생성
+ * 2023-08-31        Jay       Track Signal Test로 변경
  */
 @DisplayName("이동평균 테스트")
 @ExtendWith(MockitoExtension.class)
-class TrackMoveAverageTest {
+class TrackSignalTest {
 
     @Mock
     private MoveAverageRepository moveAverageRepository;
