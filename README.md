@@ -106,11 +106,11 @@
 <hr>
 
 ### Architecture  
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5bfd8d1e-dc49-4ab7-9dbc-dbbbff98cfb9)
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/edb3eb82-b0f1-4814-996f-ff72f4810d8c)
 <hr>
 
 ### Sequence Diagram
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/56787d80-3906-47a5-9fa9-cc03677b5b30)  
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/2ac84bea-e2bb-4566-affd-e12f131c7054)  
 <hr>
 
 ### Message Example
