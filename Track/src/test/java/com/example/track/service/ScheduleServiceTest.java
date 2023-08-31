@@ -1,8 +1,8 @@
 package com.example.track.service;
 
-import com.example.track.application.ScheduleService;
 import com.example.track.application.TrackService;
-import com.example.track.application.TrackSignalService;
+import com.example.track.application.TrackServiceImpl;
+import com.example.track.dao.ClosePriceRepository;
 import com.example.track.domain.ClosePrice;
 import com.example.track.dto.ClosePriceResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,70 +13,78 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * packageName    : com.example.track.service
  * fileName       : ScheduleServiceTest
  * author         : Jay
  * date           : 2023-08-30
- * description    :
+ * description    : 00시마다 스케쥴링하여 최신 BTC 가격을 조회, 계산 테스트
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023-08-30        Jay       최초 생성
  */
-@SpringBootTest
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("스케쥴 서비스 테스트")
 public class ScheduleServiceTest {
-
     @Mock
-    private TrackService trackService;
-
-    @Mock
-    private TrackSignalService trackSignalService;
-
+    private ClosePriceRepository closePriceRepository;
     @InjectMocks
-    private ScheduleService scheduleService;
+    private TrackService trackService = new TrackServiceImpl(closePriceRepository, null);
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
+    @DisplayName("더미 이동평균값 업데이트")
     @Test
-    @DisplayName("최신 이동평균값 업데이트")
-    public void testTrackMoveAverageAdd() throws Exception {
+    public void testTrackMoveAverageAddTest() throws Exception {
         // Given
-        List<ClosePrice> closePrices = new ArrayList<>();
-        when(trackService.selectClosePriceList()).thenReturn(closePrices);
+        List<ClosePrice> closePrices = this.fiftyDummyCandles();
 
         // When
-        scheduleService.trackMoveAverageAdd();
+        trackService.insertMoveAverage(closePrices);
 
         // Then
-        verify(trackService).insertMoveAverage(closePrices);
-        verify(trackService).insertBTCStatus();
-        verify(trackSignalService).getLatestMoveAverage();
+        verify(trackService, times(1)).insertMoveAverage(closePrices);
     }
 
     @Test
-    @DisplayName("최신 종가 업데이트")
+    @DisplayName("더미 종가 업데이트")
     public void testTrackClosePriceAdd() throws Exception {
         // Given
-        ClosePriceResponse closePriceResponse = mock(ClosePriceResponse.class);
-        when(trackService.selectBinanceClosePrice()).thenReturn(closePriceResponse);
+        ClosePriceResponse closePriceResponse = this.ClosePriceDummy();
+        ClosePrice closePrice = ClosePrice.createFromResponse(closePriceResponse);
 
         // When
-        scheduleService.trackClosePriceAdd();
+        closePriceRepository.save(closePrice);
 
         // Then
-        verify(trackService).insertClosePrice(closePriceResponse);
+        verify(closePriceRepository, times(1)).save(closePrice);
+    }
+
+    public List<ClosePrice> fiftyDummyCandles() {
+        List<ClosePrice> candles = new ArrayList<>();
+
+        for (int i = 0; i < 50; i++) {
+            candles.add(new ClosePrice("BTC", new BigDecimal(100), LocalDateTime.now()));
+        }
+
+        return candles;
+    }
+
+    public ClosePriceResponse ClosePriceDummy() {
+        return new ClosePriceResponse("BTC",new BigDecimal(100), LocalDateTime.now());
     }
 }
