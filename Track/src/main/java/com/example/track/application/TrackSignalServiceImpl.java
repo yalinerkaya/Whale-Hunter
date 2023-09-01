@@ -1,11 +1,13 @@
 package com.example.track.application;
 
-import com.example.global.common.CommonKafkaProducer;
 import com.example.global.common.SignalType;
+import com.example.global.config.KafkaConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.track.dao.MoveAverageRepository;
+import com.example.track.domain.MoveAverage;
 import com.example.track.dto.MoveAverageResponse;
+import com.example.track.kafka.Kafka;
 import com.example.track.kafka.TradeEvent;
 import com.example.track.kafka.TradeTestKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -33,39 +35,40 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class TrackSignalServiceImpl implements TrackSignalService {
     private final MoveAverageRepository moveAverageRepository;
-    private final TradeTestKafkaProducer kafkaProducer = new CommonKafkaProducer().createTradeEventKafkaProducer();
+    private final TradeTestKafkaProducer kafkaCommonProduce;
 
     @Override
     @Cacheable("latestMoveAverage")
-    public MoveAverageResponse getLatestMoveAverage() {
-        return moveAverageRepository.findTopByOrderByCreatedAtDesc();
+    public MoveAverage getLatestMoveAverage() {
+        return moveAverageRepository.findOneByOrderByCreatedAtDesc();
     }
 
     @Override
     @CircuitBreaker(name = "messageService", fallbackMethod = "fallbackMessageService")
     public void processTradeEvent(TradeEvent tradeEvent) {
-        CompletableFuture<MoveAverageResponse> latestMoveAverageFuture = fetchLatestMoveAverageAsync();
+        CompletableFuture<MoveAverage> latestMoveAverageFuture = CompletableFuture.supplyAsync(() -> {
+            return getLatestMoveAverage();
+        });
+
         latestMoveAverageFuture.thenAcceptAsync(latestPrice -> {
             sendSignalBasedOnPriceComparison(tradeEvent, latestPrice);
-        });
+        }).join();
     }
 
-    private CompletableFuture<MoveAverageResponse> fetchLatestMoveAverageAsync() {
-        return CompletableFuture.supplyAsync(this::getLatestMoveAverage);
-    }
-
-    private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, MoveAverageResponse moveAverageResponse) {
+    private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, MoveAverage moveAverageResponse) {
         BigDecimal tradePrice = new BigDecimal(tradeEvent.getPrice());
         int comparisonResult = tradePrice.compareTo(moveAverageResponse.getMoveAverage());
 
         // Breakout
-        if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST)) {
-            kafkaProducer.send(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST.getValue());
+        if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST.getValue())) {
+            kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST.getValue());
+            moveAverageRepository.save(moveAverageResponse.moveAverageUp(moveAverageResponse));
         }
 
         // Breakdown
-        if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST)) {
-            kafkaProducer.send(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST.getValue());
+        if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST.getValue())) {
+            kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST.getValue());
+            moveAverageRepository.save(moveAverageResponse.moveAverageDown(moveAverageResponse));
         }
     }
 

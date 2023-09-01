@@ -39,7 +39,7 @@ public class MoveAverage {
     private String symbol;
 
     @Column(name = "last_status")
-    private SignalType lastStatus;
+    private String lastStatus;
 
     @Column(name = "move_average")
     private BigDecimal moveAverage;
@@ -59,7 +59,16 @@ public class MoveAverage {
     }
 
     public void changeStatus(SignalType lastStatus) {
-        this.lastStatus = lastStatus;
+        this.lastStatus = lastStatus.getValue();
     }
 
+    public MoveAverage moveAverageDown(MoveAverage moveAverage){
+        moveAverage.changeStatus(SignalType.CURRENT_LOWER_THAN_LAST);
+        return moveAverage;
+    }
+
+    public MoveAverage moveAverageUp(MoveAverage moveAverage){
+        moveAverage.changeStatus(SignalType.CURRENT_HIGHER_THAN_LAST);
+        return moveAverage;
+    }
 }

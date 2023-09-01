@@ -28,6 +28,7 @@ public class KafkaMessageConsumer {
 
     @KafkaListener(topics = "trade_test", groupId = "data-api")
     public void consumeTradeEvent(String current) throws Exception {
+        current = current.replaceAll("^\"|\"$", "");
 
         try{
             if(current.equals(UP)){

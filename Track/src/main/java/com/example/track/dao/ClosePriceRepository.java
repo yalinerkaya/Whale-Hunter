@@ -21,5 +21,5 @@ import java.util.List;
 public interface ClosePriceRepository extends JpaRepository<ClosePrice, Long> {
     List<ClosePrice> findAllByOrderByClosedAtDesc();
 
-    ClosePrice findOneByOrderByClosedAtDesc();
+    ClosePrice findFirstByOrderByClosedAtDesc();
 }

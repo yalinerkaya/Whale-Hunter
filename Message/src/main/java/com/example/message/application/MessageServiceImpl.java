@@ -3,6 +3,8 @@ package com.example.message.application;
 import com.example.global.config.TelegramConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
+import com.example.message.dao.CoinRepository;
+import com.example.message.domain.Coin;
 import com.example.message.domain.Telegram;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +24,8 @@ import static com.example.global.util.MessageConstants.*;
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
-    @PersistenceContext
-    private final EntityManager entityManager;
+
+    private final CoinRepository coinRepository;
     private final TelegramConfig telegramConfig;
 
     @Override
@@ -46,17 +48,14 @@ public class MessageServiceImpl implements MessageService {
         if (conn.getResponseCode() != TELEGRAM_SUCCESS_CODE) {
             throw new WhaleException(WhaleExceptionType.MESSAGE_ERROR_SEND);
         } else {
-            updateCoinStatus(symbol, status);
+            insertCoinStatus(symbol, status);
         }
 
         conn.disconnect();
     }
 
-    public void updateCoinStatus(String symbol, String status) throws Exception {
-        String jpql = "UPDATE Coin c SET c.status = :status WHERE c.symbol = :symbol";
-        entityManager.createQuery(jpql)
-            .setParameter(SYMBOL, symbol)
-            .setParameter(STATUS, status)
-            .executeUpdate();
+    @Transactional
+    public void insertCoinStatus(String symbol, String status) {
+        coinRepository.save(Coin.createBTCEvent(symbol, status));
     }
 }

@@ -41,4 +41,14 @@ public class Coin {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    public Coin(String symbol, String status) {
+        this.symbol = symbol;
+        this.status = status;
+    }
+    public static Coin createBTCEvent(String symbol, String status){
+        return new Coin(symbol, status);
+    }
+
+
 }
