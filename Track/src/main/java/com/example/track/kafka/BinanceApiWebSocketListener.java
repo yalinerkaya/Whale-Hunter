@@ -53,14 +53,15 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
                 CompletableFuture.runAsync(() -> {trackSignalServiceImpl.processTradeEvent(tradeEvent);});
             }
 
-            if (tradeEvent.getEvent().equals("updated")) {
+            // 모든 거래 시각화 제외
+/*            if (tradeEvent.getEvent().equals("updated")) {
                 CompletableFuture.runAsync(() -> kafkaProducer.send(convertTimestampToTimeString(tradeEvent.getTimestamp()), tradeEvent))
                         .whenComplete((result, ex) -> {
                             if (ex != null) {
                                 log.error("전송 중 에러 발생: " + ex.getMessage());
                             }
                         });
-            }
+            }*/
 
             log.info("새로운 이벤트 발생: " + messageJson);
 
