@@ -148,7 +148,7 @@ public class TrackServiceTest {
         ClosePrice closePrice = mock(ClosePrice.class);
         MoveAverage moveAverage = mock(MoveAverage.class);
 
-        when(closePriceRepository.findOneByOrderByClosedAtDesc()).thenReturn(closePrice);
+        when(closePriceRepository.findFirstByOrderByClosedAtDesc()).thenReturn(closePrice);
         when(moveAverageRepository.findOneByOrderByCreatedAtDesc()).thenReturn(moveAverage);
 
         // when
@@ -165,7 +165,7 @@ public class TrackServiceTest {
         ClosePrice closePrice = mock(ClosePrice.class);
         MoveAverage moveAverage = mock(MoveAverage.class);
 
-        when(closePriceRepository.findOneByOrderByClosedAtDesc()).thenReturn(closePrice);
+        when(closePriceRepository.findFirstByOrderByClosedAtDesc()).thenReturn(closePrice);
         when(moveAverageRepository.findOneByOrderByCreatedAtDesc()).thenReturn(moveAverage);
 
         // when
