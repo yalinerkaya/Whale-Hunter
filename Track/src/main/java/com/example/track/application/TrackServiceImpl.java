@@ -112,7 +112,7 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public void insertBTCStatus() throws Exception {
-        ClosePrice closePrice = closePriceRepository.findOneByOrderByClosedAtDesc();
+        ClosePrice closePrice = closePriceRepository.findFirstByOrderByClosedAtDesc();
         MoveAverage moveAverage = moveAverageRepository.findOneByOrderByCreatedAtDesc();
 
         int comparisonResult = closePrice.getClosingPrice().compareTo(moveAverage.getMoveAverage());
