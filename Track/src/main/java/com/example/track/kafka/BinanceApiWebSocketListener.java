@@ -31,13 +31,13 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
     private final TradeEventKafkaProducer kafkaProducer;
     private final ObjectMapper mapper = new ObjectMapper();
     private final TrackSignalServiceImpl trackSignalServiceImpl;
-    private final StringBuilder builder = new StringBuilder();
     private CompletableFuture<?> completable = new CompletableFuture<>();
 
     @Override
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
 
-        builder.append(data);
+
+
         webSocket.request(1);
 
         if (!last) {
@@ -45,6 +45,7 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
         }
 
         try {
+            StringBuilder builder = new StringBuilder(data);
             String messageJson = builder.toString();
             TradeEvent tradeEvent = mapper.readValue(messageJson, TradeEvent.class);
 
@@ -59,9 +60,9 @@ public class BinanceApiWebSocketListener implements WebSocket.Listener {
                                 log.error("전송 중 에러 발생: " + ex.getMessage());
                             }
                         });
-            } else {
-                log.info("새로운 이벤트 발생: " + messageJson);
             }
+
+            log.info("새로운 이벤트 발생: " + messageJson);
 
             completable.complete(null);
             CompletionStage<?> completionStage = completable;

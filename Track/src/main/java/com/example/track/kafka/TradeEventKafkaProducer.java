@@ -33,7 +33,7 @@ public class TradeEventKafkaProducer implements KafkaProducerService<TradeEvent>
             if (exception != null) {
                 log.error("레코드 입력 실패, 사유 :", exception);
             } else {
-                log.info("레코드 작성 성공! 파티션 : " + metadata.partition() + " 토픽 : " + metadata.topic());
+                log.info("레코드 작성 성공! 파티션 : " + metadata.partition() + " 토픽 : " + metadata.topic() + "|" + metadata.offset());
             }
         }));
     }
