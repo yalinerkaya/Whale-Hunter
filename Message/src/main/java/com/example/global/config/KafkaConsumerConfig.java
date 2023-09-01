@@ -69,7 +69,7 @@ public class KafkaConsumerConfig {
         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         config.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, sessionTimeoutMs);
 
-        kafkaConsumer = new KafkaConsumer<>(config, new StringDeserializer(), new JsonDeserializer<>(String.class, new ObjectMapper()));
+        kafkaConsumer = new KafkaConsumer<>(config, new StringDeserializer(), new JsonDeserializer<>(String.class));
         kafkaConsumer.subscribe(Collections.singletonList(topic));
         return kafkaConsumer;
     }

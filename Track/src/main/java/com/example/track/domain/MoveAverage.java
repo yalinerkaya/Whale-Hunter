@@ -62,4 +62,13 @@ public class MoveAverage {
         this.lastStatus = lastStatus.getValue();
     }
 
+    public MoveAverage moveAverageDown(MoveAverage moveAverage){
+        moveAverage.changeStatus(SignalType.CURRENT_LOWER_THAN_LAST);
+        return moveAverage;
+    }
+
+    public MoveAverage moveAverageUp(MoveAverage moveAverage){
+        moveAverage.changeStatus(SignalType.CURRENT_HIGHER_THAN_LAST);
+        return moveAverage;
+    }
 }

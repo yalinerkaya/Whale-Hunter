@@ -1,5 +1,6 @@
 package com.example.track.application;
 
+import com.example.track.domain.MoveAverage;
 import com.example.track.dto.MoveAverageResponse;
 import com.example.track.kafka.TradeEvent;
 
@@ -18,5 +19,5 @@ public interface TrackSignalService {
 
     void processTradeEvent(TradeEvent tradeEvent) throws Exception;
 
-    MoveAverageResponse getLatestMoveAverage() throws Exception;
+    MoveAverage getLatestMoveAverage() throws Exception;
 }

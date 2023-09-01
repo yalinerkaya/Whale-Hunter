@@ -20,7 +20,5 @@ import java.util.concurrent.CompletableFuture;
  */
 @Repository
 public interface MoveAverageRepository extends JpaRepository<MoveAverage, Long> {
-    MoveAverageResponse findTopByOrderByCreatedAtDesc();
-
     MoveAverage findOneByOrderByCreatedAtDesc();
 }
