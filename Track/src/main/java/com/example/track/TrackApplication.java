@@ -1,7 +1,6 @@
 package com.example.track;
 
 import com.example.global.config.BinanceConfig;
-import com.example.global.config.KafkaConfig;
 import com.example.global.exception.WhaleException;
 import com.example.track.application.TrackSignalService;
 import com.example.track.application.TrackSignalServiceImpl;
@@ -28,12 +27,11 @@ public class TrackApplication {
 
         try {
             TrackSignalService trackSignalService = context.getBean(TrackSignalService.class);
-            KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
             BinanceConfig binanceConfig = context.getBean(BinanceConfig.class);
-            Extractor extractor = new Extractor((TrackSignalServiceImpl) trackSignalService, kafkaConfig, binanceConfig);
+            Extractor extractor = new Extractor((TrackSignalServiceImpl) trackSignalService, binanceConfig);
             extractor.start();
-        } catch (WhaleException e) {
-            e.getStackTrace();
+        } catch (Exception exception) {
+            throw new WhaleException(exception);
         }
 
     }

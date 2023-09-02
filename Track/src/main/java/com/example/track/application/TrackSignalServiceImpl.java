@@ -1,15 +1,12 @@
 package com.example.track.application;
 
 import com.example.global.common.SignalType;
-import com.example.global.config.KafkaConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.track.dao.MoveAverageRepository;
 import com.example.track.domain.MoveAverage;
-import com.example.track.dto.MoveAverageResponse;
-import com.example.track.kafka.Kafka;
 import com.example.track.kafka.TradeEvent;
-import com.example.track.kafka.TradeTestKafkaProducer;
+import com.example.track.kafka.TradeMessageKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class TrackSignalServiceImpl implements TrackSignalService {
     private final MoveAverageRepository moveAverageRepository;
-    private final TradeTestKafkaProducer kafkaCommonProduce;
+    private final TradeMessageKafkaProducer kafkaCommonProduce;
 
     @Override
     @Cacheable("latestMoveAverage")
@@ -46,13 +43,8 @@ public class TrackSignalServiceImpl implements TrackSignalService {
     @Override
     @CircuitBreaker(name = "messageService", fallbackMethod = "fallbackMessageService")
     public void processTradeEvent(TradeEvent tradeEvent) {
-        CompletableFuture<MoveAverage> latestMoveAverageFuture = CompletableFuture.supplyAsync(() -> {
-            return getLatestMoveAverage();
-        });
-
-        latestMoveAverageFuture.thenAcceptAsync(latestPrice -> {
-            sendSignalBasedOnPriceComparison(tradeEvent, latestPrice);
-        }).join();
+        CompletableFuture<MoveAverage> latestMoveAverageFuture = CompletableFuture.supplyAsync(() -> getLatestMoveAverage());
+        latestMoveAverageFuture.thenAcceptAsync(latestPrice -> {sendSignalBasedOnPriceComparison(tradeEvent, latestPrice);}).join();
     }
 
     private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, MoveAverage moveAverageResponse) {

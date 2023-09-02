@@ -2,7 +2,7 @@ package com.example.global.config;
 
 import com.example.track.kafka.Kafka;
 import com.example.track.kafka.TestEventSerde;
-import com.example.track.kafka.TradeTestKafkaProducer;
+import com.example.track.kafka.TradeMessageKafkaProducer;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -43,13 +43,13 @@ public class KafkaConfig {
         return new Kafka(this.inputTopic, this.outputTopic, this.servers, this.acks, this.extractor, this.processor);
     }
     @Bean(name = "kafkaCommonProduce")
-    public TradeTestKafkaProducer createTradeEventKafkaProducer() {
+    public TradeMessageKafkaProducer createTradeEventKafkaProducer() {
         Map<String, Object> kafkaConfigSetting = new HashMap<>();
         kafkaConfigSetting.put(ProducerConfig.ACKS_CONFIG, this.getAcks());
         kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.getServers());
         kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, this.getExtractor());
         KafkaProducer<String, String> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TestEventSerde());
-        TradeTestKafkaProducer kafkaProducer = new TradeTestKafkaProducer(kafkaProducerService);
+        TradeMessageKafkaProducer kafkaProducer = new TradeMessageKafkaProducer(kafkaProducerService);
         return kafkaProducer;
     }
 }
