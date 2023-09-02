@@ -34,7 +34,6 @@ import java.util.concurrent.CompletableFuture;
 public class TrackSignalServiceImpl implements TrackSignalService {
     private final MoveAverageRepository moveAverageRepository;
     private final TradeMessageKafkaProducer kafkaCommonProduce;
-
     private final TradeErrorKafkaProducer kafkaErrorProduce;
 
     @Override
@@ -69,7 +68,7 @@ public class TrackSignalServiceImpl implements TrackSignalService {
         } catch (Exception exception) {
             // 실패한 메시지를 오류 토픽으로 이동
             kafkaErrorProduce.send(tradeEvent.getTradeId(), tradeEvent);
-            throw new WhaleException(exception);
+            throw new WhaleException(WhaleExceptionType.TRACK_ERROR_SIGNAL_CHECK, exception);
         }
     }
 

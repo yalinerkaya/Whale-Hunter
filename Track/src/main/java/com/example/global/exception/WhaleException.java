@@ -32,10 +32,10 @@ public class WhaleException extends RuntimeException {
         this.message = whaleExceptionType.getMessage();
     }
 
-    public WhaleException(Exception exception) {
+    public WhaleException(WhaleExceptionType whaleExceptionType, Exception exception) {
         super();
         this.status = HttpStatus.INTERNAL_SERVER_ERROR;
-        this.code = WhaleExceptionType.INTERNAL_SERVER_ERROR.getCode();
+        this.code = whaleExceptionType.getCode();
         this.message = exception.getMessage();
     }
 }
