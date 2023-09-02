@@ -25,4 +25,6 @@ public class MessageConstants {
     public static final String LOCALHOST_ENDPOINT = "http://localhost:8003/btc";
     public static final String FIFTY_AVERAGE_BREAKOUT = "비트코인 매수 시그널이 포착되었습니다.";
     public static final String FIFTY_AVERAGE_BREAKDOWN = "비트코인 매도 시그널이 포착되었습니다.";
+
+    public static final String TRADE_ERROR_TOPIC = "trade_error";
 }
