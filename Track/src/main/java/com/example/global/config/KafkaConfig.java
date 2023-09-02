@@ -1,8 +1,6 @@
 package com.example.global.config;
 
-import com.example.track.kafka.Kafka;
-import com.example.track.kafka.TestEventSerde;
-import com.example.track.kafka.TradeMessageKafkaProducer;
+import com.example.track.kafka.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -48,8 +46,19 @@ public class KafkaConfig {
         kafkaConfigSetting.put(ProducerConfig.ACKS_CONFIG, this.getAcks());
         kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.getServers());
         kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, this.getExtractor());
+        kafkaConfigSetting.put(ProducerConfig.RETRIES_CONFIG, 3); // 3회 재시도
         KafkaProducer<String, String> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TestEventSerde());
         TradeMessageKafkaProducer kafkaProducer = new TradeMessageKafkaProducer(kafkaProducerService);
+        return kafkaProducer;
+    }
+    @Bean(name = "kafkaErrorProduce")
+    public TradeErrorKafkaProducer createTradeErrorKafkaProducer() {
+        Map<String, Object> kafkaConfigSetting = new HashMap<>();
+        kafkaConfigSetting.put(ProducerConfig.ACKS_CONFIG, this.getAcks());
+        kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.getServers());
+        kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, this.getExtractor());
+        KafkaProducer<String, TradeEvent> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TradeEventSerde());
+        TradeErrorKafkaProducer kafkaProducer = new TradeErrorKafkaProducer(kafkaProducerService);
         return kafkaProducer;
     }
 }

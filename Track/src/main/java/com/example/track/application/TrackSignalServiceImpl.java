@@ -5,6 +5,7 @@ import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.track.dao.MoveAverageRepository;
 import com.example.track.domain.MoveAverage;
+import com.example.track.kafka.TradeErrorKafkaProducer;
 import com.example.track.kafka.TradeEvent;
 import com.example.track.kafka.TradeMessageKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -34,6 +35,8 @@ public class TrackSignalServiceImpl implements TrackSignalService {
     private final MoveAverageRepository moveAverageRepository;
     private final TradeMessageKafkaProducer kafkaCommonProduce;
 
+    private final TradeErrorKafkaProducer kafkaErrorProduce;
+
     @Override
     @Cacheable("latestMoveAverage")
     public MoveAverage getLatestMoveAverage() {
@@ -48,19 +51,25 @@ public class TrackSignalServiceImpl implements TrackSignalService {
     }
 
     private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, MoveAverage moveAverageResponse) {
-        BigDecimal tradePrice = new BigDecimal(tradeEvent.getPrice());
-        int comparisonResult = tradePrice.compareTo(moveAverageResponse.getMoveAverage());
+        try {
+            BigDecimal tradePrice = new BigDecimal(tradeEvent.getPrice());
+            int comparisonResult = tradePrice.compareTo(moveAverageResponse.getMoveAverage());
 
-        // Breakout
-        if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST.getValue())) {
-            kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST.getValue());
-            moveAverageRepository.save(moveAverageResponse.moveAverageUp(moveAverageResponse));
-        }
+            // Breakout
+            if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST.getValue())) {
+                kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST.getValue());
+                moveAverageRepository.save(moveAverageResponse.moveAverageUp(moveAverageResponse));
+            }
 
-        // Breakdown
-        if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST.getValue())) {
-            kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST.getValue());
-            moveAverageRepository.save(moveAverageResponse.moveAverageDown(moveAverageResponse));
+            // Breakdown
+            if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST.getValue())) {
+                kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST.getValue());
+                moveAverageRepository.save(moveAverageResponse.moveAverageDown(moveAverageResponse));
+            }
+        } catch (Exception exception) {
+            // 실패한 메시지를 오류 토픽으로 이동
+            kafkaErrorProduce.send(tradeEvent.getTradeId(), tradeEvent);
+            throw new WhaleException(exception);
         }
     }
 

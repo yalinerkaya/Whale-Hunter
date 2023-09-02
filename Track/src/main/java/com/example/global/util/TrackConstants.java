@@ -42,4 +42,6 @@ public class TrackConstants {
     public static final String MIDNIGHT_10_SECONDS = "10 0 0 * * ?";
 
     public static final String TRADE_MESSAGE_TOPIC = "trade_test";
+
+    public static final String TRADE_ERROR_TOPIC = "trade_error";
 }

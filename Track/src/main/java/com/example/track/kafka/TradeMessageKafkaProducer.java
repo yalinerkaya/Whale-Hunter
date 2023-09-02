@@ -21,6 +21,7 @@ import static com.example.global.util.TrackConstants.TRADE_MESSAGE_TOPIC;
 public class TradeMessageKafkaProducer implements KafkaProducerService<String> {
 
     private final KafkaProducer<String, String> kafkaProducer;
+
     public TradeMessageKafkaProducer(KafkaProducer<String, String> kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
     }

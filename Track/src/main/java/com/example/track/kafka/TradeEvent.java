@@ -29,4 +29,5 @@ public class TradeEvent {
     private String qty;
     private String price;
     private String lastClosePrice;
+    private String tradeId;
 }
