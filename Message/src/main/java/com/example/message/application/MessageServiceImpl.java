@@ -29,6 +29,21 @@ public class MessageServiceImpl implements MessageService {
     private final TelegramConfig telegramConfig;
 
     @Override
+    public boolean selectCompletedEvent(MessageEventRequest messageEventRequest) throws Exception {
+        Coin coin = coinRepository.findByTradeUid(messageEventRequest.getTradeUid());
+
+        if(coin == null){
+            return false;
+        }
+
+        if(coin.getStatus().equals(StatusCode.COMPLETE.getValue())){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     @Transactional
     public void priceBreakout(MessageEventRequest messageEventRequest) throws Exception {
         sendMessageAndUpdateStatus(FIFTY_AVERAGE_BREAKOUT, messageEventRequest);

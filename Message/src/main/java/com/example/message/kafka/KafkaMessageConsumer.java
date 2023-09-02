@@ -39,14 +39,18 @@ public class KafkaMessageConsumer {
         try {
             TradeEvent tradeEvent = objectMapper.readValue(record.value().toString(), TradeEvent.class);
             MessageEventRequest messageEventRequest = MessageEventRequest.generateEvent(tradeEvent);
-            messageService.insertMessageEvent(messageEventRequest);
 
-            if (tradeEvent.getSignalType().equals(UP)) {
-                messageService.priceBreakout(messageEventRequest);
-            }
+            if (!messageService.selectCompletedEvent(messageEventRequest)) {
+                // 멱등성 체크를 통과하지 못한 경우에만 로직 실행
+                messageService.insertMessageEvent(messageEventRequest);
 
-            if (tradeEvent.getSignalType().equals(DOWN)) {
-                messageService.priceBreakdown(messageEventRequest);
+                if (tradeEvent.getSignalType().equals(UP)) {
+                    messageService.priceBreakout(messageEventRequest);
+                }
+
+                if (tradeEvent.getSignalType().equals(DOWN)) {
+                    messageService.priceBreakdown(messageEventRequest);
+                }
             }
 
         } catch (Exception exception) {
