@@ -1,18 +1,18 @@
 package com.example.message.application;
 
+import com.example.global.common.StatusCode;
 import com.example.global.config.TelegramConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.message.dao.CoinRepository;
 import com.example.message.domain.Coin;
 import com.example.message.domain.Telegram;
+import com.example.message.dto.MessageEventRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -30,17 +30,23 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public void priceBreakout() throws Exception {
-        sendMessageAndUpdateStatus(FIFTY_AVERAGE_BREAKOUT, SYMBOL_BTC_USDT, UP);
+    public void priceBreakout(MessageEventRequest messageEventRequest) throws Exception {
+        sendMessageAndUpdateStatus(FIFTY_AVERAGE_BREAKOUT, messageEventRequest);
     }
 
     @Override
     @Transactional
-    public void priceBreakdown() throws Exception {
-        sendMessageAndUpdateStatus(FIFTY_AVERAGE_BREAKDOWN, SYMBOL_BTC_USDT, DOWN);
+    public void priceBreakdown(MessageEventRequest messageEventRequest) throws Exception {
+        sendMessageAndUpdateStatus(FIFTY_AVERAGE_BREAKDOWN, messageEventRequest);
     }
 
-    public void sendMessageAndUpdateStatus(String message, String symbol, String status) throws Exception {
+    @Override
+    @Transactional
+    public void insertMessageEvent(MessageEventRequest messageEventRequest) throws Exception {
+        coinRepository.save(Coin.createBTCEvent(messageEventRequest));
+    }
+
+    public void sendMessageAndUpdateStatus(String message, MessageEventRequest messageEventRequest) throws Exception {
         URL url = Telegram.buildSendMessageUrl(message, telegramConfig);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(HTTP_GET_METHOD);
@@ -48,14 +54,15 @@ public class MessageServiceImpl implements MessageService {
         if (conn.getResponseCode() != TELEGRAM_SUCCESS_CODE) {
             throw new WhaleException(WhaleExceptionType.MESSAGE_ERROR_SEND);
         } else {
-            insertCoinStatus(symbol, status);
+            this.updateCoinStatus(messageEventRequest);
         }
 
         conn.disconnect();
     }
 
     @Transactional
-    public void insertCoinStatus(String symbol, String status) {
-        coinRepository.save(Coin.createBTCEvent(symbol, status));
+    public void updateCoinStatus(MessageEventRequest messageEventRequest) {
+        Coin coin = coinRepository.findByTradeUid(messageEventRequest.getTradeUid());
+        coinRepository.save(coin.changeCoinStatus(coin, StatusCode.COMPLETE));
     }
 }

@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.BytesSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.common.utils.Bytes;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +50,7 @@ public class KafkaConfig {
         kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.getServers());
         kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, this.getExtractor());
         kafkaConfigSetting.put(ProducerConfig.RETRIES_CONFIG, 3); // 3회 재시도
-        KafkaProducer<String, String> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TestEventSerde());
+        KafkaProducer<String, byte[]> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new ByteArraySerializer());
         TradeMessageKafkaProducer kafkaProducer = new TradeMessageKafkaProducer(kafkaProducerService);
         return kafkaProducer;
     }

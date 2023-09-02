@@ -56,13 +56,13 @@ public class TrackSignalServiceImpl implements TrackSignalService {
 
             // Breakout
             if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST.getValue())) {
-                kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST.getValue());
+                kafkaCommonProduce.send(tradeEvent.getTradeId(), tradeEvent.breakOutEvent(tradeEvent, SignalType.CURRENT_LOWER_THAN_LAST));
                 moveAverageRepository.save(moveAverageResponse.moveAverageUp(moveAverageResponse));
             }
 
             // Breakdown
             if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST.getValue())) {
-                kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST.getValue());
+                kafkaCommonProduce.send(tradeEvent.getTradeId(), tradeEvent.breakOutEvent(tradeEvent, SignalType.CURRENT_HIGHER_THAN_LAST));
                 moveAverageRepository.save(moveAverageResponse.moveAverageDown(moveAverageResponse));
             }
         } catch (Exception exception) {

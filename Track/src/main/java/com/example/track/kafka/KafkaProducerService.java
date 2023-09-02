@@ -11,8 +11,10 @@ package com.example.track.kafka;
  * -----------------------------------------------------------
  * 2023-07-24        Jay       최초 생성
  */
-public interface KafkaProducerService<T> {
-    void send(String key, T record);
+public interface KafkaProducerService {
+    void send(String key, TradeEvent record);
+
+    void send(String key, byte[] record);
 
     void close();
 }

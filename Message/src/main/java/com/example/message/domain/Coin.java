@@ -1,5 +1,7 @@
 package com.example.message.domain;
 
+import com.example.global.common.StatusCode;
+import com.example.message.dto.MessageEventRequest;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -28,7 +30,8 @@ public class Coin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coin_uid")
     private Long coinUid;
-
+    @Column(name = "trade_uid")
+    private Long tradeUid;
     @Column(name = "symbol")
     private String symbol;
 
@@ -42,12 +45,21 @@ public class Coin {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Coin(String symbol, String status) {
+    public Coin(Long tradeUid, String symbol, String status) {
+        this.tradeUid = tradeUid;
         this.symbol = symbol;
         this.status = status;
     }
-    public static Coin createBTCEvent(String symbol, String status){
-        return new Coin(symbol, status);
+
+    private void changeStatus(StatusCode statusCode){
+        this.status = statusCode.getValue();
+    }
+    public Coin changeCoinStatus(Coin coin, StatusCode statusCode){
+        this.changeStatus(statusCode);
+        return coin;
+    }
+    public static Coin createBTCEvent(MessageEventRequest messageEventRequest){
+        return new Coin(messageEventRequest.getTradeUid(),messageEventRequest.getSymbol(), messageEventRequest.getStatus());
     }
 
 

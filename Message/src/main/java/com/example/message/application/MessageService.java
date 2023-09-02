@@ -1,7 +1,11 @@
 package com.example.message.application;
 
-public interface MessageService {
-    void priceBreakout() throws Exception;
+import com.example.message.dto.MessageEventRequest;
 
-    void priceBreakdown() throws Exception;
+public interface MessageService {
+    void priceBreakout(MessageEventRequest messageEventRequest) throws Exception;
+
+    void priceBreakdown(MessageEventRequest messageEventRequest) throws Exception;
+
+    void insertMessageEvent(MessageEventRequest messageEventRequest) throws Exception;
 }

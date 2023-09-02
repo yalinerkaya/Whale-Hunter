@@ -2,6 +2,7 @@ package com.example.message.service;
 
 import com.example.message.application.MessageService;
 import com.example.message.dao.CoinRepository;
+import com.example.message.dto.MessageEventRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,9 +42,9 @@ public class MessageServiceTest {
 
     @DisplayName("텔레그램 돌파 알림 테스트")
     @Test
-    public void telegramMessageTest() throws Exception {
-        messageService.priceBreakout();
+    public void telegramMessageTest(MessageEventRequest messageEventRequest) throws Exception {
+        messageService.priceBreakout(messageEventRequest);
 
-        verify(messageService, times(1)).priceBreakout();
+        verify(messageService, times(1)).priceBreakout(messageEventRequest);
     }
 }

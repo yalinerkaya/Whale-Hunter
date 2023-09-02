@@ -19,6 +19,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CoinRepository extends JpaRepository<Coin, Long> {
-    @Query("SELECT c.status FROM Coin c WHERE c.symbol = :symbol")
-    String findStatusBySymbol(@Param("symbol") String symbol);
+    Coin findByTradeUid(Long tradeUid);
 }
