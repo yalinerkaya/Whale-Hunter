@@ -1,5 +1,6 @@
 package com.example.message.domain;
 
+import com.example.global.common.StatusCode;
 import com.example.global.config.TelegramConfig;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,6 @@ public class Telegram {
     private String chat;
     private String token;
     private String name;
-
     public static URL buildSendMessageUrl(String message, TelegramConfig telegramConfig) throws MalformedURLException, UnsupportedEncodingException {
         String urlString =
             String.format(

@@ -1,13 +1,14 @@
 package com.example.global.config;
 
-import com.example.track.kafka.Kafka;
-import com.example.track.kafka.TestEventSerde;
-import com.example.track.kafka.TradeTestKafkaProducer;
+import com.example.track.kafka.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.BytesSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.common.utils.Bytes;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,13 +44,24 @@ public class KafkaConfig {
         return new Kafka(this.inputTopic, this.outputTopic, this.servers, this.acks, this.extractor, this.processor);
     }
     @Bean(name = "kafkaCommonProduce")
-    public TradeTestKafkaProducer createTradeEventKafkaProducer() {
+    public TradeMessageKafkaProducer createTradeEventKafkaProducer() {
         Map<String, Object> kafkaConfigSetting = new HashMap<>();
         kafkaConfigSetting.put(ProducerConfig.ACKS_CONFIG, this.getAcks());
         kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.getServers());
         kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, this.getExtractor());
-        KafkaProducer<String, String> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TestEventSerde());
-        TradeTestKafkaProducer kafkaProducer = new TradeTestKafkaProducer(kafkaProducerService);
+        kafkaConfigSetting.put(ProducerConfig.RETRIES_CONFIG, 3); // 3회 재시도
+        KafkaProducer<String, byte[]> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new ByteArraySerializer());
+        TradeMessageKafkaProducer kafkaProducer = new TradeMessageKafkaProducer(kafkaProducerService);
+        return kafkaProducer;
+    }
+    @Bean(name = "kafkaErrorProduce")
+    public TradeErrorKafkaProducer createTradeErrorKafkaProducer() {
+        Map<String, Object> kafkaConfigSetting = new HashMap<>();
+        kafkaConfigSetting.put(ProducerConfig.ACKS_CONFIG, this.getAcks());
+        kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.getServers());
+        kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, this.getExtractor());
+        KafkaProducer<String, TradeEvent> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TradeEventSerde());
+        TradeErrorKafkaProducer kafkaProducer = new TradeErrorKafkaProducer(kafkaProducerService);
         return kafkaProducer;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.message.kafka;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -32,4 +33,11 @@ public class TradeEvent {
     private String qty;
     private String price;
     private String lastClosePrice;
+    private String tradeId;
+    private String signalType;
+
+    public TradeEvent(String tradeId, String signalType) {
+        this.tradeId = tradeId;
+        this.signalType = signalType;
+    }
 }

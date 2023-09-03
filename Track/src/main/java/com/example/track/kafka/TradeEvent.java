@@ -1,5 +1,6 @@
 package com.example.track.kafka;
 
+import com.example.global.common.SignalType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -29,4 +30,14 @@ public class TradeEvent {
     private String qty;
     private String price;
     private String lastClosePrice;
+    private String tradeId;
+    private String signalType;
+
+    private void changeTradeSignal(SignalType signalType){
+        this.signalType = signalType.getValue();
+    }
+    public TradeEvent breakOutEvent(TradeEvent tradeEvent, SignalType signalType){
+        this.changeTradeSignal(signalType);
+        return tradeEvent;
+    }
 }

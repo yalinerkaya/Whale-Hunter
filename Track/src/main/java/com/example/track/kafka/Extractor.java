@@ -39,15 +39,11 @@ import static com.example.global.util.TrackConstants.*;
 @Slf4j
 public class Extractor {
     private final TrackSignalServiceImpl trackSignalServiceImpl;
-
-    private final KafkaConfig kafkaConfig;
-
     private final BinanceConfig binanceConfig;
 
-
-    public CountDownLatch start() throws WhaleException {
+    public CountDownLatch start() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
-        BinanceApiWebSocketListener listener = new BinanceApiWebSocketListener(latch, kafkaProducer(), trackSignalServiceImpl);
+        BinanceApiWebSocketListener listener = new BinanceApiWebSocketListener(latch, trackSignalServiceImpl);
         HttpClient client = HttpClient.newHttpClient();
 
         WebSocket webSocket = client.newWebSocketBuilder()
@@ -65,16 +61,5 @@ public class Extractor {
         webSocket.sendText(new JSONObject(msgMap).toString(), true);
         log.info(CHANNEL_SUBSCRIPTION);
         return latch;
-    }
-
-    private TradeEventKafkaProducer kafkaProducer() throws WhaleException {
-        Map<String, Object> kafkaConfigSetting = new HashMap<>();
-        kafkaConfigSetting.put(ProducerConfig.ACKS_CONFIG, kafkaConfig.getAcks());
-        kafkaConfigSetting.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getServers());
-        kafkaConfigSetting.put(ProducerConfig.CLIENT_ID_CONFIG, kafkaConfig.getExtractor());
-        KafkaProducer<String, TradeEvent> kafkaProducerService = new KafkaProducer<>(kafkaConfigSetting, new StringSerializer(), new TradeEventSerde());
-        TradeEventKafkaProducer kafkaProducer = new TradeEventKafkaProducer(kafkaProducerService, kafkaConfig.getInputTopic());
-        Runtime.getRuntime().addShutdownHook(new Thread(kafkaProducer::close));
-        return kafkaProducer;
     }
 }

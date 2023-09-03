@@ -1,15 +1,13 @@
 package com.example.track.application;
 
 import com.example.global.common.SignalType;
-import com.example.global.config.KafkaConfig;
 import com.example.global.exception.WhaleException;
 import com.example.global.exception.WhaleExceptionType;
 import com.example.track.dao.MoveAverageRepository;
 import com.example.track.domain.MoveAverage;
-import com.example.track.dto.MoveAverageResponse;
-import com.example.track.kafka.Kafka;
+import com.example.track.kafka.TradeErrorKafkaProducer;
 import com.example.track.kafka.TradeEvent;
-import com.example.track.kafka.TradeTestKafkaProducer;
+import com.example.track.kafka.TradeMessageKafkaProducer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +33,8 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class TrackSignalServiceImpl implements TrackSignalService {
     private final MoveAverageRepository moveAverageRepository;
-    private final TradeTestKafkaProducer kafkaCommonProduce;
+    private final TradeMessageKafkaProducer kafkaCommonProduce;
+    private final TradeErrorKafkaProducer kafkaErrorProduce;
 
     @Override
     @Cacheable("latestMoveAverage")
@@ -46,29 +45,30 @@ public class TrackSignalServiceImpl implements TrackSignalService {
     @Override
     @CircuitBreaker(name = "messageService", fallbackMethod = "fallbackMessageService")
     public void processTradeEvent(TradeEvent tradeEvent) {
-        CompletableFuture<MoveAverage> latestMoveAverageFuture = CompletableFuture.supplyAsync(() -> {
-            return getLatestMoveAverage();
-        });
-
-        latestMoveAverageFuture.thenAcceptAsync(latestPrice -> {
-            sendSignalBasedOnPriceComparison(tradeEvent, latestPrice);
-        }).join();
+        CompletableFuture<MoveAverage> latestMoveAverageFuture = CompletableFuture.supplyAsync(() -> getLatestMoveAverage());
+        latestMoveAverageFuture.thenAcceptAsync(latestPrice -> {sendSignalBasedOnPriceComparison(tradeEvent, latestPrice);}).join();
     }
 
     private void sendSignalBasedOnPriceComparison(TradeEvent tradeEvent, MoveAverage moveAverageResponse) {
-        BigDecimal tradePrice = new BigDecimal(tradeEvent.getPrice());
-        int comparisonResult = tradePrice.compareTo(moveAverageResponse.getMoveAverage());
+        try {
+            BigDecimal tradePrice = new BigDecimal(tradeEvent.getPrice());
+            int comparisonResult = tradePrice.compareTo(moveAverageResponse.getMoveAverage());
 
-        // Breakout
-        if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST.getValue())) {
-            kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_HIGHER_THAN_LAST.getValue());
-            moveAverageRepository.save(moveAverageResponse.moveAverageUp(moveAverageResponse));
-        }
+            // Breakout
+            if (comparisonResult > 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_LOWER_THAN_LAST.getValue())) {
+                kafkaCommonProduce.send(tradeEvent.getTradeId(), tradeEvent.breakOutEvent(tradeEvent, SignalType.CURRENT_LOWER_THAN_LAST));
+                moveAverageRepository.save(moveAverageResponse.moveAverageUp(moveAverageResponse));
+            }
 
-        // Breakdown
-        if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST.getValue())) {
-            kafkaCommonProduce.send(tradeEvent.getSeqnum(), SignalType.CURRENT_LOWER_THAN_LAST.getValue());
-            moveAverageRepository.save(moveAverageResponse.moveAverageDown(moveAverageResponse));
+            // Breakdown
+            if (comparisonResult < 0 && moveAverageResponse.getLastStatus().equals(SignalType.CURRENT_HIGHER_THAN_LAST.getValue())) {
+                kafkaCommonProduce.send(tradeEvent.getTradeId(), tradeEvent.breakOutEvent(tradeEvent, SignalType.CURRENT_HIGHER_THAN_LAST));
+                moveAverageRepository.save(moveAverageResponse.moveAverageDown(moveAverageResponse));
+            }
+        } catch (Exception exception) {
+            // 실패한 메시지를 오류 토픽으로 이동
+            kafkaErrorProduce.send(tradeEvent.getTradeId(), tradeEvent);
+            throw new WhaleException(WhaleExceptionType.TRACK_ERROR_SIGNAL_CHECK, exception);
         }
     }
 

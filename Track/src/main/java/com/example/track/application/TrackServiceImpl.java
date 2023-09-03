@@ -14,8 +14,6 @@ import com.example.track.domain.Binance;
 import com.example.track.domain.ClosePrice;
 import com.example.track.domain.MoveAverage;
 import com.example.track.dto.ClosePriceResponse;
-import com.example.track.dto.MoveAverageResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

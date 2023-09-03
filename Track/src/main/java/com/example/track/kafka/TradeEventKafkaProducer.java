@@ -16,7 +16,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
  * 2023-07-24        Jay       최초 생성
  */
 @Slf4j
-public class TradeEventKafkaProducer implements KafkaProducerService<TradeEvent> {
+public class TradeEventKafkaProducer implements KafkaProducerService {
 
     private final KafkaProducer<String, TradeEvent> kafkaProducer;
     private final String topic;
@@ -36,6 +36,11 @@ public class TradeEventKafkaProducer implements KafkaProducerService<TradeEvent>
                 log.info("레코드 작성 성공! 파티션 : " + metadata.partition() + " 토픽 : " + metadata.topic() + "|" + metadata.offset());
             }
         }));
+    }
+
+    @Override
+    public void send(String key, byte[] record) {
+
     }
 
     @Override
