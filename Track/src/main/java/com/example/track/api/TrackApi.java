@@ -79,5 +79,13 @@ public class TrackApi {
         trackService.insertClosePrice(closePriceResponses);
         return new CommonResponse<>();
     }
+
+    @PostMapping("/test")
+    public void test() throws Exception {
+        Random random = new Random();
+        String traceUid = String.valueOf(random.nextInt(900) + 100);
+        TradeEvent tradeEvent = new TradeEvent("1", null, null, null, null, null, null ,null, "100", null, traceUid, null);
+        trackSignalService.processTradeEvent(tradeEvent);
+    }
 }
 

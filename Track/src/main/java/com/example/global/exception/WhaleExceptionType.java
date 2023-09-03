@@ -22,12 +22,16 @@ public enum WhaleExceptionType {
     INVALID_SERIALIZE("01004", "exception.invalid.serialize"),
 
     /** TRACK **/
-    TRACK_REQUIRED_CLOSE_PRICE("01010", "track.required.closePrice"),
+    TRACK_REQUIRED_CLOSE_PRICE("01010", "track.required.closeprice"),
     TRACK_INVALID_CLOSE_PRICE("01011", "track.invalid.closePrice"),
     TRACK_INVALID_QUANTITY("01012", "track.invalid.quantity"),
     TRACK_INVALID_PRICE("01013", "track.invalid.price"),
     TRACK_ERROR_WEBSOCKET_CONNECT("01014", "track.error.websocket.connect"),
-    TRACK_ERROR_SIGNAL_CHECK("01015", "track.error.signal.check");
+    TRACK_ERROR_SIGNAL_CHECK("01015", "track.error.signal.check"),
+
+    TRACK_REQUIRED_CANDLESTICK("01016", "track.required.candlestick"),
+
+    TRACK_REQUIRED_MOVE_AVERAGE("01017", "track.required.moveaverage");
 
     private final String code;
     private final String message;
