@@ -188,6 +188,7 @@ API 호출시 코드 0을 제외한 나머지는 에러로 정의
 | 03000  | 텔레그램 전송에 실패했습니다.   | API KEY 확인 및 재전송 요청이 필요합니다. |
 | 03001  | 코인이 필요합니다.   | 코인 조회중 실패, DB 확인이 필요합니다. |
 | 03002  | 메세지 소비에 실패했습니다.   | 이벤트 바인딩 여부, 카프카 컨슈머 상태 체크가 필요합니다. |
+<hr>
 
 ### [기술적 이슈(클릭시 이동)](https://github.com/JayFreemandev/Whale-Hunter/wiki)
 - [전체 장애 방지를 위한 서킷 브레이커](https://github.com/JayFreemandev/Whale-Hunter/wiki/Resilience4j%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%A0%84%EC%B2%B4-%EC%9E%A5%EC%95%A0-%EB%B0%A9%EC%A7%80)
