@@ -162,7 +162,7 @@
 <hr>
 
 ## [API Document 클릭시 이동](https://jayfreemandev.notion.site/API-f20ef3d1cee34c1bb42a6966a87a1d7e?pvs=4)
-API 호출시 코드 0을 제외한 나머지는 에러로 정의
+API 호출시 성공 코드 0을 제외한 나머지는 에러로 정의
 
 ### Error Spec
 **공용 에러 코드**  
