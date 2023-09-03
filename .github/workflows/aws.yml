@@ -38,7 +38,7 @@ env:
   ECS_TASK_DEFINITION: Kafka  # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: whale           # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
+                                                # containerDefinitions section of your task definition
 
 permissions:
   contents: read
