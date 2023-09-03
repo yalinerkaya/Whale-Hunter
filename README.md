@@ -110,7 +110,7 @@
 <hr>
 
 ### Sequence Diagram
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5b8ee47a-2570-4f3f-9cdf-5391c33b3669)  
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5675aed8-d025-4c73-94ef-4629ddb75633)  
 <hr>
 
 ### Message Example
