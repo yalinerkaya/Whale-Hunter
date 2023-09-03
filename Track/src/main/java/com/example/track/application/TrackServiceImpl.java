@@ -16,6 +16,8 @@ import com.example.track.domain.MoveAverage;
 import com.example.track.dto.ClosePriceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -65,6 +67,10 @@ public class TrackServiceImpl implements TrackService {
         List<ClosePriceResponse> closePriceResponses = new ArrayList<>();
         List<Candlestick> candlesticks = client.getCandlestickBars(BTC_USDT, DAILY, FIVE_HUNDRED_LIMIT, startTime, endTime);
 
+        if(CollectionUtils.isEmpty(candlesticks)){
+            throw new WhaleException(WhaleExceptionType.TRACK_REQUIRED_CANDLESTICK);
+        }
+
         for (Candlestick candlestick : candlesticks) {
             LocalDateTime closeTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(candlestick.getCloseTime()), ZoneId.of(UTC));
             BigDecimal closePrice = new BigDecimal(candlestick.getClose());
@@ -87,6 +93,11 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public List<ClosePrice> selectClosePriceList() throws Exception {
         List<ClosePrice> allClosePrices = closePriceRepository.findAllByOrderByClosedAtDesc();
+
+        if(CollectionUtils.isEmpty(allClosePrices)){
+            throw new WhaleException(WhaleExceptionType.TRACK_REQUIRED_CANDLESTICK);
+        }
+
         return allClosePrices.stream().limit(FIFTY).collect(Collectors.toList());
     }
 
@@ -111,7 +122,16 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public void insertBTCStatus() throws Exception {
         ClosePrice closePrice = closePriceRepository.findFirstByOrderByClosedAtDesc();
+
+        if(ObjectUtils.isEmpty(closePrice)){
+            throw new WhaleException(WhaleExceptionType.TRACK_REQUIRED_CLOSE_PRICE);
+        }
+
         MoveAverage moveAverage = moveAverageRepository.findOneByOrderByCreatedAtDesc();
+
+        if(ObjectUtils.isEmpty(moveAverage)){
+            throw new WhaleException(WhaleExceptionType.TRACK_REQUIRED_MOVE_AVERAGE);
+        }
 
         int comparisonResult = closePrice.getClosingPrice().compareTo(moveAverage.getMoveAverage());
 
@@ -132,6 +152,11 @@ public class TrackServiceImpl implements TrackService {
         long startTime = DateUtils.getStartTimeBeforeDays(1);
 
         Candlestick candlestick = client.getCandlestickBars(BTC_USDT, DAILY, ONE, startTime, endTime).get(ZERO);
+
+        if(ObjectUtils.isEmpty(candlestick)){
+            throw new WhaleException(WhaleExceptionType.TRACK_REQUIRED_CANDLESTICK);
+        }
+
         LocalDateTime closeTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(candlestick.getCloseTime()), ZoneId.of(UTC));
         BigDecimal closePrice = new BigDecimal(candlestick.getClose());
 

@@ -17,7 +17,11 @@ public enum WhaleExceptionType {
     INVALID_BINDING("01002", "exception.binding.invalid"),
 
     /** TRACK **/
-    MESSAGE_ERROR_SEND("03000", "message.error.send");
+    MESSAGE_ERROR_SEND("03000", "message.error.send"),
+
+    MESSAGE_REQUIRED_COIN("03001", "message.required.coin"),
+
+    MESSAGE_ERROR_CONSUME("03002", "message.error.consume");
     private final String code;
     private final String message;
 

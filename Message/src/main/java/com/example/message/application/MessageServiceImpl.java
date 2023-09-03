@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -78,6 +79,11 @@ public class MessageServiceImpl implements MessageService {
     @Transactional
     public void updateCoinStatus(MessageEventRequest messageEventRequest) {
         Coin coin = coinRepository.findByTradeUid(messageEventRequest.getTradeUid());
+
+        if(ObjectUtils.isEmpty(coin)){
+            throw new WhaleException(WhaleExceptionType.MESSAGE_REQUIRED_COIN);
+        }
+
         coinRepository.save(coin.changeCoinStatus(coin, StatusCode.COMPLETE));
     }
 }

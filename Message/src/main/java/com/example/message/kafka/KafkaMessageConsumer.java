@@ -1,5 +1,7 @@
 package com.example.message.kafka;
 
+import com.example.global.exception.WhaleException;
+import com.example.global.exception.WhaleExceptionType;
 import com.example.message.application.MessageService;
 import com.example.message.dto.MessageEventRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,6 +57,7 @@ public class KafkaMessageConsumer {
         } catch (Exception exception) {
             log.info(exception.getMessage());
             kafkaErrorProduce.send(TRADE_ERROR_TOPIC, tradeEvent);
+            throw new WhaleException(WhaleExceptionType.MESSAGE_ERROR_CONSUME, exception);
         }
     }
 }

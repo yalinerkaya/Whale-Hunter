@@ -1,5 +1,7 @@
 package com.example.track.application;
 
+import com.example.global.exception.WhaleException;
+import com.example.global.exception.WhaleExceptionType;
 import com.example.track.domain.ClosePrice;
 import com.example.track.dto.ClosePriceResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -40,6 +44,12 @@ public class ScheduleService {
     @Async
     public void trackMoveAverageAdd() throws Exception {
         List<ClosePrice> closePrices = trackService.selectClosePriceList();
+
+        if(CollectionUtils.isEmpty(closePrices)){
+            throw new WhaleException(WhaleExceptionType.TRACK_REQUIRED_CLOSE_PRICE);
+        }
+
+
         trackService.insertMoveAverage(closePrices);
         trackService.insertBTCStatus();
         // 캐싱
@@ -51,6 +61,11 @@ public class ScheduleService {
     @CacheEvict(value = "latestMoveAverage", allEntries = true)
     public void trackClosePriceAdd() throws Exception {
         ClosePriceResponse closePriceResponses = trackService.selectBinanceClosePrice();
+
+        if(ObjectUtils.isEmpty(closePriceResponses)){
+            throw new WhaleException(WhaleExceptionType.TRACK_REQUIRED_CLOSE_PRICE);
+        }
+
         trackService.insertClosePrice(closePriceResponses);
     }
 }
