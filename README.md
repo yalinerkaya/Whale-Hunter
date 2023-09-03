@@ -106,18 +106,19 @@
 <hr>
 
 ### Architecture  
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/edb3eb82-b0f1-4814-996f-ff72f4810d8c)
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/0f91b65c-cd92-45a4-9d0a-1835d81bd8f5)
 <hr>
 
 ### Sequence Diagram
-![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/2ac84bea-e2bb-4566-affd-e12f131c7054)  
+![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/5b8ee47a-2570-4f3f-9cdf-5391c33b3669)  
 <hr>
 
 ### Message Example
 ![image](https://github.com/JayFreemandev/Whale-Hunter/assets/72185011/c10da3b7-9701-4ad1-900f-183ea4474a7b)
 <hr>
 
-### STRESS TEST 
+### STRESS TEST
+
 *결과요약*
 
 |  | 1차 50건 | 2차 50건 | --- 3차 3000건 | 
