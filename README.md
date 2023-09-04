@@ -195,7 +195,7 @@ API 호출시 성공 코드 0을 제외한 나머지는 에러로 정의
 - [전체 장애 방지를 위한 서킷 브레이커](https://github.com/JayFreemandev/Whale-Hunter/wiki/Resilience4j%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EC%A0%84%EC%B2%B4-%EC%9E%A5%EC%95%A0-%EB%B0%A9%EC%A7%80)
 - [분산 환경에서 로그 관리를 어떻게 해야할까](https://github.com/JayFreemandev/Whale-Hunter/wiki/MSA-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-%EB%A1%9C%EA%B9%85%EA%B3%BC-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%AC%B8%EC%A0%9C)
 - [실시간 모니터링과 장애 감지를 어떻게 해야할까](https://github.com/JayFreemandev/Whale-Hunter/wiki/MSA-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-%EB%A1%9C%EA%B9%85%EA%B3%BC-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%AC%B8%EC%A0%9C)
-- [하드웨어 업그레이드 없이 TPS를 향상시켜보자](https://github.com/JayFreemandev/Whale-Hunter/wiki/Home/_edit)
+- [하드웨어 업그레이드 없이 TPS를 향상시켜보자](https://github.com/JayFreemandev/Whale-Hunter/wiki/JMETER%EB%A1%9C-%EB%B3%91%EB%AA%A9-%ED%98%84%EC%83%81%EC%9D%84-%EC%A4%84%EC%97%AC-TPS-50%25-%EC%9D%B4%EC%83%81-%ED%96%A5%EC%83%81)
 - [분산 환경에서 트랜잭션 관리와 실패시 어떻게 재처리할까](https://github.com/JayFreemandev/Whale-Hunter/wiki/%EB%B6%84%EC%82%B0-%EC%8B%9C%EC%8A%A4%ED%85%9C-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EA%B3%BC-%EC%8B%A4%ED%8C%A8%EC%8B%9C-%EC%9E%AC%EC%B2%98%EB%A6%AC)
 <hr>
 
