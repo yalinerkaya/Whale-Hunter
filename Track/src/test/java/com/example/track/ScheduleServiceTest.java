@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -75,13 +77,9 @@ public class ScheduleServiceTest {
     }
 
     public List<ClosePrice> fiftyDummyCandles() {
-        List<ClosePrice> candles = new ArrayList<>();
-
-        for (int i = 0; i < 50; i++) {
-            candles.add(new ClosePrice("BTC", new BigDecimal(100), LocalDateTime.now()));
-        }
-
-        return candles;
+        return Stream.generate(() -> new ClosePrice("BTC", new BigDecimal(100), LocalDateTime.now()))
+                .limit(50)
+                .collect(Collectors.toList());
     }
 
     public ClosePriceResponse ClosePriceDummy() {
