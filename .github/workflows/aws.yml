@@ -31,14 +31,18 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: ap-northeast-2                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: whale           # set this to your Amazon ECR repository name
-  ECS_SERVICE: whale                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: whaleCluster                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: Kafka  # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: whale           # set this to the name of the container in the
-                                                # containerDefinitions section of your task definition
+  AWS_REGION: ap-northeast-2     # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: whale          # set this to your Amazon ECR repository name
+  ECS_SERVICE: whale             # set this to your Amazon ECS service name
+  ECS_CLUSTER: whaleCluster      # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: Kafka     # set this to the path to your Amazon ECS task definition
+                                 # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: whale          # set this to the name of the container in the
+                                 # containerDefinitions section of your task definition
+  TRACK_DOCKERFILE: ./Track/Dockerfile
+  MESSAGE_DOCKERFILE: ./Message/Dockerfile
+  MYSQL_URL: ${{ secrets.MYSQL_URL }}
+  MYSQL_SECRET: ${{ secrets.MYSQL_SECRET }}
 
 permissions:
   contents: read
@@ -64,31 +68,56 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
+    - name: Build, tag, and push image to Amazon ECR for Track
+      id: build-track-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        # Build the Track docker container and push it to ECR
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f $TRACK_DOCKERFILE ./Track
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        echo "track-image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT 
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
+    - name: Build, tag, and push image to Amazon ECR for Message
+      id: build-message-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build the Message docker container and push it to ECR
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f $MESSAGE_DOCKERFILE ./Message
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "message-image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPU
+
+    - name: Fill in the new image ID in the Amazon ECS task definition for Track
+      id: track-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+        image: ${{ steps.build-track-image.outputs.image }}
+    
+    - name: Fill in the new image ID in the Amazon ECS task definition for Message
+      id: message-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-message-image.outputs.image }}
 
-    - name: Deploy Amazon ECS task definition
+    - name: Deploy Amazon ECS task definition for Track
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: ${{ steps.track-task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+    
+    - name: Deploy Amazon ECS task definition for Message
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.message-task-def.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
