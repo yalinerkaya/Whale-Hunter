@@ -1,0 +1,37 @@
+= REST Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+
+[[Track_API]]
+== Track API
+
+
+[[BTC_CLOSE_PRICE_LIST]]
+=== BTC 50일 종가 리스트 저장
+include::{snippets}/track-api-test/btc_50_days_close_price_list_save/http-request.adoc[]
+include::{snippets}/track-api-test//btc_50_days_close_price_list_save/http-response.adoc[]
+
+[[BTC_MOVE_AVERAGE_SAVE]]
+=== BTC 50일 이동 평균값 저장
+include::{snippets}/track-api-test/btc_50_days_move_average_price_save/http-request.adoc[]
+include::{snippets}/track-api-test/btc_50_days_move_average_price_save/http-response.adoc[]
+
+
+[[BTC_NEW_CLOSE_PRICE_SAVE]]
+=== BTC 신규 종가 저장
+include::{snippets}/track-api-test/btc_new_close_price_save/http-request.adoc[]
+include::{snippets}/track-api-test/btc_new_close_price_save/http-response.adoc[]
+
+[[BTC_STATUS_SAVE]]
+=== BTC 상태값 저장
+include::{snippets}/track-api-test/btc_status_save/http-request.adoc[]
+include::{snippets}/track-api-test/btc_status_save/http-response.adoc[]

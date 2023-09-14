@@ -3,6 +3,7 @@ plugins {
     id 'war'
     id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.example'
@@ -12,13 +13,17 @@ java {
     sourceCompatibility = "11"
 }
 
-task copySecret(type: Copy) {
-    from file("${rootProject.projectDir.parent}/Whale-Hunter-Submodule/Track")
-    include "application*.yml"
-    into 'src/main/resources'
+configurations {
+    asciidoctorExt
 }
 
-processResources.dependsOn('copySecret')
+//task copySecret(type: Copy) {
+//    from file("${rootProject.projectDir.parent}/Whale-Hunter-Submodule/Track")
+//    include "application*.yml"
+//    into 'src/main/resources'
+//}
+//
+//processResources.dependsOn('copySecret')
 
 repositories {
     mavenCentral()
@@ -31,6 +36,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     testImplementation 'org.mockito:mockito-junit-jupiter:4.5.1'
     testImplementation 'org.mockito:mockito-core:4.5.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
@@ -61,6 +70,36 @@ dependencies {
     implementation  'org.springframework:spring-webmvc:5.3.20'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.kafka:spring-kafka'
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    outputs.dir snippetsDir // (6)
+}
+
+asciidoctor {
+    configurations 'asciidoctorExt'
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument
 }
 
 targetCompatibility = JavaVersion.VERSION_11
