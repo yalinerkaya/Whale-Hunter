@@ -24,11 +24,10 @@ import static com.example.global.util.TrackConstants.SUCCESS;
 @EqualsAndHashCode(callSuper = false)
 public class Result<T> {
 
+    private String code = SUCCESS;
+    private String message = BLANK;
     private T data;
 
-    private String code = SUCCESS;
-
-    private String message = BLANK;
 
     public Result() {
     }

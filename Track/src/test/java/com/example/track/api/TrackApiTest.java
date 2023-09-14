@@ -1,26 +1,14 @@
-package com.example.track;
+package com.example.track.api;
 
-import com.example.track.api.TrackApi;
-import com.example.track.application.TrackService;
+import com.example.track.AbstractRestDocsTests;
 import com.example.track.application.TrackServiceImpl;
-import com.example.track.application.TrackSignalService;
 import com.example.track.application.TrackSignalServiceImpl;
 import com.example.track.dao.ClosePriceRepository;
 import com.example.track.dao.MoveAverageRepository;
-import com.example.track.dto.ClosePriceResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,9 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(TrackApi.class)
-public class TrackApiTest {
-    @Autowired
-    private MockMvc mockMvc;
+public class TrackApiTest extends AbstractRestDocsTests {
 
     @MockBean
     private TrackServiceImpl trackService;
